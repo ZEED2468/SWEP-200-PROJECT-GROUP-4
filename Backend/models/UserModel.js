@@ -21,13 +21,16 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "Please provide password"],
     minlength: 6,
+  },
+  token_id: {
+    type: mongoose.Schema.Types.ObjectId, ///ref an event model id
+    ref: "Token",
   },
   role: {
     type: String,
     enum: ["Coordinator", "Supervisor"],
-    default: "Coordinator",
+    default: "Supervisor",
   },
 });
 //Setup presave hook to hash paswords
@@ -36,13 +39,6 @@ UserSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-//compare password method.
-// UserSchema.methods.comparePassword = async function (userPassword) {
-//   const isMatch = await bcrypt.compare(userPassword, this.password);
-//   return isMatch;
-// };
-
-//login functionality
 UserSchema.statics.login = async function (email, password) {
   if (!email || !password) {
     throw new CustomError.BadRequestError("Please provide Email and Password");
