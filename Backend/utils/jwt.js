@@ -11,10 +11,11 @@ const createJWT = ({ payload }) => {
 const isTokenValid = ({ token }) => jwt.verify(token, process.env.JWT_SECRET);
 
 const attachCoookiesToResponse = ({ res, user }) => {
+  const oneDay = 1000 * 60 * 60 * 24;
   const tokenUser = createJWT({ payload: user });
   res.cookie("tokenUser", tokenUser, {
     httpOnly: true,
-    expires: new Date(Date.now() + 20000),
+    expires: new Date(Date.now() + oneDay),
     secure: process.env.NODE_ENV === "production",
     signed: true,
   });
