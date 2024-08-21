@@ -1,6 +1,8 @@
 const User = require("../models/UserModel");
 const SuperAdmin = require("../models/SuperAdminModel");
 const Token = require("../models/TokenModel");
+const { createJWT, attachCoookiesToResponse } = require("../utils/jwt");
+const createTokenUser = require("../utils/createTokenUser");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 
@@ -35,7 +37,7 @@ const register = async (req, res) => {
 
   const superAdmin = await SuperAdmin.create({ email, password });
 
-  const superadmin_id = await SuperAdmin.findOne({ email }, "_id");
+  const superadmin_id = await SuperAdmin.findOne({ email }, "_id"); //get id
 
   const createToken = await Token.create({
     token: superAdminToken,
@@ -50,11 +52,16 @@ const register = async (req, res) => {
     token_id: token_id._id,
     role: "Coordinator",
   });
+  //?Here
+  const tokenUser = createTokenUser(user);
+
+  attachCoookiesToResponse({ res, user: tokenUser });
 
   const userdetails = {
     superAdmin,
     createToken,
     user,
+    tokenUser,
   };
 
   res.status(StatusCodes.CREATED).json({ userdetails });
@@ -73,13 +80,20 @@ const login = async (req, res) => {
     const token_id = usertoken._id;
 
     const user = await User.findOne({ token_id });
+    //const tokenUser = createJWT(user);
+    const tokenUser = createTokenUser(user);
 
-    res.status(StatusCodes.OK).json({ user });
+    attachCoookiesToResponse({ res, user: tokenUser });
+
+    res.status(StatusCodes.OK).json({ user, tokenUser });
   } else {
     try {
       const user = await User.login(email, password);
+      const tokenUser = createTokenUser(user);
 
-      res.status(StatusCodes.OK).json({ user });
+      attachCoookiesToResponse({ res, user: tokenUser });
+
+      res.status(StatusCodes.OK).json({ user, tokenUser });
     } catch (error) {
       throw new CustomError.UnauthenticatedError("Invalid Credentials");
     }
@@ -87,6 +101,11 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
+  res.cookie("tokenUser", "Logout", {
+    httpOnly: true,
+    expires: new Date(Date.now() + 3000),
+    signed: true,
+  });
   res.send("LogOut user");
 };
 

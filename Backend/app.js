@@ -1,5 +1,8 @@
 require("dotenv").config();
 require("express-async-errors");
+const cors = require("cors");
+const helmet = require("helmet");
+
 const express = require("express");
 const app = express();
 app.use(express.json());
@@ -13,8 +16,18 @@ const authRouter = require("./routes/authRoute");
 const notFound = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser"); //parse cookie in browser
 
 app.use(morgan("tiny"));
+app.use(helmet());
+
+app.use(cors());
+app.use(cookieParser(process.env.JWT_SECRET)); // signing our cookies
+
+app.get("/", (req, res) => {
+  console.log(req.signedCookies);
+  res.send("FaceEdu Api");
+});
 
 app.use("/api/v1/auth", authRouter);
 
