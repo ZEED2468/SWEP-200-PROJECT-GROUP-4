@@ -106,7 +106,8 @@ const logout = async (req, res) => {
     expires: new Date(Date.now() + 1000),
     signed: true,
   });
-  res.send("LogOut user");
+
+  res.send(req.user);
 };
 
 module.exports = {

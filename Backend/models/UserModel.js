@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
   },
   token_id: {
-    type: mongoose.Schema.Types.ObjectId, ///ref an event model id
+    type: mongoose.Schema.Types.ObjectId, 
     ref: "Token",
   },
   role: {
