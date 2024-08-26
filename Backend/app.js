@@ -40,6 +40,7 @@ const start = async () => {
   try {
     //Connect to database here
     await connectDB(process.env.MONGO_URI);
+
     app.listen(port, console.log(`Server is Listening on port... ${port}`));
   } catch (error) {
     console.log(error);
