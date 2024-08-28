@@ -2,7 +2,7 @@ import React from 'react'
 import logo from "../img/Group 7.png";
 import back from "../img/Group 4.png"
 import topLogo from "../img/Group 6.png";
-import image from "../img/Ellipse 4.png"
+import image from "../img/Human 4.png"
 import { NavLinks } from '.';
 import { IoMdCopy } from "react-icons/io";
 import { Link } from 'react-router-dom';
