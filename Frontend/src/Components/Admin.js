@@ -1,16 +1,16 @@
 import React from 'react'
-import logo from "../assets/Group 7.svg";
-import back from "../assets/Group 4.png"
-import topLogo from "../assets/Group 6.svg";
-import image from "../assets/Ellipse 4.png"
+import logo from "../img/Group 7.png";
+import back from "../img/Group 4.png"
+import topLogo from "../img/Group 6.png";
+import image from "../img/Ellipse 4.png"
 import { NavLinks } from '.';
 import { IoMdCopy } from "react-icons/io";
 import { Link } from 'react-router-dom';
 
 const background = {
   backgroundImage: `url(${back})`,
-  backgroundSize: "cover",
-  height: "80vh",
+  backgroundSize: "contain",
+  height: "91vh",
   backgroundRepeat: "no-repeat"
 }
 
@@ -20,44 +20,45 @@ const background = {
 //     fontSyle: normal
 // }
 
-const SuperAdmin = () => {
+const Admin = () => {
   return (
-    <div className=' flex flex-col justify-center p-5 h-[770px] relative top-1'>
-      <header className='flex flex-row m-auto'>
-     <div className='flex flex-row p-4 bg-white w-[1200px] border border-b-[#3FF3FF] rounded-t-xl '>
-     <img src={logo} alt="header-logo" height="20px" width="50px"/>
+    <div className='flex flex-col'>
+      <header className='flex flex-row m-auto w-full border border-b-[#3FF3FF]'>
+     <div className='flex flex-row p-3'>
+     <img src={logo} alt="header-logo" height="20px" width="50px" className='mt-2'/>
      <h4 className='text-xl font-bold ml-3 mt-2'>FaceEdu</h4>
-     <img src={image} alt="ellipse" className='relative left-[870px]'/>
-     <Link to='/login' target='_blank' className='relative left-[880px] border-[#3FF3FF] border-2 p-1 rounded-2xl
-      pl-4 pr-4 hover:bg-[#3FF3FF]'><button type="button" 
-      className='font-bold pt-1'>Log out</button></Link>
-     <ul className='flex flex-row ml-32 gap-16'>
+
+     <ul className='flex flex-row ml-[300px] gap-36'>
                   {NavLinks.map((lists) => (
-                 <li key={lists} className='text-black text-center hover:text-blue-700 text-lg
+                 <li key={lists} className='text-black text-center hover:text-[#3FF3FF] text-lg
                   font-semibold mt-2'>
                   <Link to={lists.destination} className='cursor-pointer mr-7'>
                     {lists.text}</Link>
                  </li> )
                   )}
             </ul>
+            <img src={image} alt="ellipse" className='relative left-[270px]'/>
+            <Link to='/login' target='_blank' className=' border-[#3FF3FF]
+      border-2 p-2 rounded-2xl ml-[300px] pl-4 pr-4 hover:bg-[#3FF3FF]'><button type="button" 
+      className='font-bold'>Log out</button></Link>
      </div>
-     
       </header>
-      <section className='flex flex-row m-auto bg-black w-[1200px] h-[800px]' 
+      <section className='flex flex-row w-full
+      sm:w-fit sm:flex sm:flex-col'
       >
-     <div className='flex flex-col w-[400px] justify-between
-        p-3 rounded-r-none
-        sm:flex sm:flex-row sm:w-full
-         sm:rounded-none sm:h-28 ' style={background}>
-        <img src={topLogo} alt="logo" height="30px" width="100px" 
+     <div className='flex flex-col justify-center
+        sm:flex sm:flex-row sm:w-full w-96 bg-black
+         sm:rounded-none sm:h-28' style={background}>
+        <img src={topLogo} alt="logo" height="70px" width="70px" 
         className='m-auto sm:relative sm:bottom-2 relative top-28'/>
         <h3 className='text-white font-bold text-5xl relative
-         bottom-32 m-auto sm:relative sm:bottom-10 sm:top-7 sm:right-24'>
+         bottom-28 m-auto sm:relative sm:bottom-10 sm:top-7 sm:right-24'>
           FaceEdu</h3>
-          <p className='text-white text-center relative top-20'>@SWEP200  GROUP 4</p>
+          <p className='text-white text-center relative top-2 mb-8'>@SWEP200  GROUP 4</p>
      </div>
-     <div className='bg-white flex flex-col w-[1200px] gap-3'>
-     <h2 className="text-center font-bold text-2xl mt-7 tracking-wider" id='arbutus-slab-regular'>Revolutionizing Exam Access with Facial <br/>
+     <div className='bg-white flex flex-col gap-5 m-auto'>
+     <h2 className="text-center font-bold text-2xl tracking-wider"
+     id='arbutus-slab-regular'>Revolutionizing Exam Access with Facial <br/>
      Recognition Technology</h2>
      <p className="text-center text-md">
 
@@ -88,7 +89,7 @@ const SuperAdmin = () => {
            that only students who are truly registered for the course are granted access to the exam,<br/>
             regardless of whether they have their ID card on hand.
         </p>
-        <div className='flex flex-row m-auto gap-3 p-7'>
+        <div className='flex flex-row m-auto gap-3'>
     <p className='text-xl font-semibold'>Token</p>
     <input type="text" name="" id="" className='border-2 border-black text-center'/>
     <IoMdCopy className='relative right-2 text-3xl cursor-pointer hover:fill-black'/>
@@ -99,4 +100,4 @@ const SuperAdmin = () => {
     </div>
   )
 }
-export default SuperAdmin
+export default Admin

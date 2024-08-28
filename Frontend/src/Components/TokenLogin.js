@@ -1,8 +1,8 @@
 import React from 'react'
-import logo from "../assets/Group 7.svg";
-import face from "../assets/Ellipse 3.svg";
-import back from "../assets/Group 4.png"
-import topLogo from "../assets/Group 6.svg";
+import logo from "../img/Group 7.png";
+import face from "../img/Ellipse 3.svg";
+import back from "../img/Group 4.png"
+import topLogo from "../img/Group 6.png";
 
 const background = {
   backgroundImage: `url(${back})`,
@@ -14,7 +14,7 @@ const background = {
 const TokenLogin = () => {
   return (
     <div className='flex flex-row gap-8
-    border rounded-3xl w-[1100px] 
+    border rounded-none w-[1100px] 
     2xl:h-[200px] m-auto 
     relative top-32 sm:top-1
     overflow-hidden 
