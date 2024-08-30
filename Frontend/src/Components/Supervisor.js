@@ -90,7 +90,7 @@ const Supervisor = () => {
         )}
       </span>
           </div>
-          <Link to= '/admin' className='bg-white text-black border rounded-2xl p-3
+          <Link to= '/tokenlogin' className='bg-white text-black border rounded-2xl p-3
           sm:p-8 w-fit pl-16 pr-16 sm:pl-20 sm:pr-20
            m-auto font-bold sm:relative sm:right-0 text-2xl relative sm:text-4xl 
            right-7 hover:bg-[#3FF3FF]'><button type="submit" 
