@@ -1,7 +1,7 @@
 import React from 'react'
-import logo from "../assets/Group 7.svg";
-import back from "../assets/Group 4.png"
-import topLogo from "../assets/Group 6.svg";
+import logo from "../img/Group 7.png";
+import back from "../img/assets/Group 4 (1).png"
+import topLogo from "../img/Group 6.png";
 import { NavLinks } from '.';
 
 import { Link } from 'react-router-dom';
@@ -13,23 +13,19 @@ const background = {
   backgroundRepeat: "no-repeat"
 }
 
-
 const Home = () => {
   return (
-    <div className=' flex flex-col justify-center p-5 h-[770px]
-     relative top-1'>
-      <header className='flex flex-row m-auto'>
-     <div className='flex flex-row p-4 bg-white w-[1200px] border border-b-[#3FF3FF]
-      rounded-t-xl '>
-     <img src={logo} alt="header-logo" height="20px" width="50px"/>
+    <div className=' flex flex-col h-screen'>
+      <header className='flex flex-row border-b-2 border-[#3FF3FF]'>
+     <div className='flex flex-row p-4 bg-white'>
+     <img src={logo} alt="header-logo" width="50px"/>
      <h4 className='text-xl font-bold ml-3 mt-2'>FaceEdu</h4>
-     <Link to='/login' target='_blank' className='relative left-[880px] border-[#3FF3FF]
-      border-2 p-1 rounded-2xl
-      pl-4 pr-4 hover:bg-[#3FF3FF]'><button type="button" 
+     <Link to='/login' target='_blank' className='relative left-[1200px] border-[#3FF3FF]
+      border-2 p-1 rounded-2xl pl-4 pr-4 hover:bg-[#3FF3FF]'><button type="button" 
       className='font-bold'>Log out</button></Link>
-     <ul className='flex flex-row ml-32 gap-16'>
+     <ul className='flex flex-row gap-32 ml-64'>
                   {NavLinks.map((lists) => (
-                 <li key={lists} className='text-black text-center hover:text-blue-700 text-lg
+                 <li key={lists} className='text-black text-center hover:text-[#3FF3FF] text-lg
                   font-semibold mt-2'>
                   <Link to={lists.destination} className='cursor-pointer mr-7'>
                     {lists.text}</Link>
@@ -39,7 +35,7 @@ const Home = () => {
      </div>
      
       </header>
-      <section className='flex flex-row m-auto bg-black w-[1200px] 
+      <section className='flex flex-row m-auto bg-black w-full
       h-[800px] sm:w-fit sm:flex sm:flex-col' 
       >
      <div className='flex flex-col w-[400px] justify-between
@@ -85,8 +81,17 @@ const Home = () => {
            that only students who are truly registered for the course are granted access to the exam,<br/>
             regardless of whether they have their ID card on hand.
         </p>
+        <div className='flex flex-row gap-2 justify-center'>
+        <Link to='/admin' className='bg-black text-white border rounded-3xl
+        hover:bg-[#3FF3FF] hover:text-black hover:border hover:rounded-3xl pl-15'>
+        <button className='p-3 pl-20 pr-20'>
+          ADMIN</button></Link>
+        <Link to='/supervisor' className='bg-black text-white border rounded-3xl
+        hover:bg-[#3FF3FF] hover:text-black hover:border hover:rounded-3xl'>
+        <button className='p-3 pl-20 pr-20'>
+          SUPERVISOR</button></Link>
+        </div>
      </div>
-    
       </section>
     </div>
   )
