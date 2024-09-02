@@ -21,6 +21,7 @@ function ConfirmedPage() {
     return () => clearTimeout(timer);
   }, [navigate]);
 
+
 return (
     <div className="flex h-screen">
       <div className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8">

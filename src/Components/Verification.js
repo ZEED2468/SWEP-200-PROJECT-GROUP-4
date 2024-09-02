@@ -14,7 +14,6 @@ function VerificationPage() {
     console.log(imageSrc); // Replace with facial recognition handling
   }, [webcamRef]);
 
-
   return (
     <div className="flex h-screen">
       <div className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8">
@@ -41,14 +40,12 @@ function VerificationPage() {
             ))}
           </ul>
 
-
           <div className="flex flex-row items-center">
             <img
               src="placeholder" // image placeholder
               alt="Profile"
               className="mr-2 w-8 h-8 border-2 border-cyan-400 rounded-full object-cover"
             />
-
             <Link to='/login'>
               <button className="px-4 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors">
                 Log out
