@@ -10,12 +10,9 @@ const TokenSchema = new mongoose.Schema({
     unique: true,
     maxlength: 6,
   },
-  expiresAt: {
+  tokenCreatedAt: {
     type: Date,
-    default: Date.now,
-  },
-  createdAt: {
-    type: Date,
+    required: true,
     default: Date.now,
   },
 });

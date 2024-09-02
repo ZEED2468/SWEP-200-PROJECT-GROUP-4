@@ -64,4 +64,3 @@ function FailedPage() {
 }
 
 export default FailedPage;
-

@@ -72,9 +72,9 @@ const Result = () => {
             <p className="font-semibold">Programme:</p>
             <p className="font-semibold">Semester/Session:</p>
             <p className="font-semibold">Current Part:</p>
-          </div>
 
-          <div className="space-y-2 ml-20">
+          </div>
+            <div className="space-y-2 ml-20">
             <p className="font-semibold">{studentData.registrationNo}</p>
             <p className="font-semibold">{studentData.name}</p>
             <p>{studentData.faculty}</p>
@@ -108,3 +108,4 @@ const Result = () => {
 
 export default Result;
 // justify-between items-start
+

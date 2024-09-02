@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './Components/Home.js';
 import Register from './Components/Register.js';
@@ -40,17 +38,3 @@ function App() {
 }
 
 export default App
-=======
- import NotFound from "./Components/NotFound";
-
-function App() {
-  return (
-    <div>
-     <NotFound/>
-    </div>
-    
-  );
-}
-
-export default App;
->>>>>>> ea43ec87e945744aff5f8e87a25a4ac85e171fee
