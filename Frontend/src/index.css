@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
@@ -11,3 +12,8 @@
 }
 
   
+=======
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+>>>>>>> ea43ec87e945744aff5f8e87a25a4ac85e171fee
