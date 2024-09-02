@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import logo from "../img/Group 7.png";
 import face from "../img/Ellipse 3.svg";
-import back from "../img/Group 4.svg";
+import back from "../img/assets/Group 4.png";
 import topLogo from "../img/Group 6.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link } from "react-router-dom";
@@ -21,137 +21,84 @@ const Supervisor = () => {
   };
 
   return (
-    <div
-      className="flex flex-row gap-8
-    border rounded-none m-auto 
-    relative top-32 sm:top-1 h-[200px]
-    sm:flex sm:flex-col w-[1000px] sm:w-full sm:overflow-hidden
-     bg-black sm:min-h-[1933px]
-     sm:border sm:rounded-none overflow-hidden
-     "
-      style={background}
-    >
-      <div
-        className="flex flex-col justify-between sm:p-0
+    <div className='flex flex-row gap-8
+    border rounded-3xl w-[1100px] 
+    2xl:h-[200px] m-auto 
+    relative top-32
+    overflow-hidden sm:top-0
+    sm:flex sm:flex-col 
+     bg-black sm:w-full
+      sm:min-h-[725px] sm:border sm:rounded-none sm:fixed
+     ' style={background}>
+     <div className='flex flex-col justify-between
        bg-white p-3 border rounded-3xl rounded-r-none
-        w-72 sm:flex sm:flex-row sm:w-full sm:rounded-none sm:h-30"
-      >
-        <img
-          src={logo}
-          alt="logo"
-          height="30px"
-          width="100px"
-          className="m-auto sm:relative sm:bottom-2"
-        />
-        <h3
-          className="text-black font-bold text-4xl relative
-         bottom-20 m-auto sm:relative sm:bottom-10 sm:top-7 sm:right-64"
-        >
-          FaceEdu
-        </h3>
-
-        <img
-          src={face}
-          alt="faceverify"
-          height="100px"
-          width="200px"
-          className="m-auto sm:relative sm:bottom-1 sm:left-16"
-        />
+        w-72 sm:flex sm:flex-row sm:w-full sm:rounded-none sm:h-20'>
+        <img src={logo} alt="logo" height="30px" width="100px" className='m-auto sm:relative sm:bottom-2 sm:w-14'/>
+        <h3 className='text-black font-bold text-4xl relative
+         bottom-20 m-auto sm:relative sm:bottom-10 sm:top-7 sm:right-24 sm:text-lg'>
+          FaceEdu</h3>
+          <img src={face} alt="faceverify" height="100px" width="200px"    
+        className='m-auto sm:relative sm:bottom-8 sm:left-10 sm:w-32 sm:h-28'/>
       </div>
-      <div
-        className="flex flex-col m-auto
-       "
-      >
+
+      <div className="flex flex-col m-auto sm:flex sm:flex-col">
         <Link to={"/tokenlogin"}>
           <h3
-            className="text-white pointer relative left-[420px] bottom-6 border
-             border-[#3FF3FF] rounded-3xl text-center w-fit p-3 pl-7 pr-7
-              sm:relative sm:bottom-[540px]  sm:bg-black "
+            className="text-white pointer relative left-[420px] bottom-6 border border-[#3FF3FF]
+             rounded-3xl text-center w-fit p-3 pl-7 pr-7 sm:relative sm:bottom-44 sm:left-24 sm:p-2 sm:pl-3 sm:pr-3 
+             sm:text-sm sm:text-white sm:bg-black"
           >
             SUPERVISOR
           </h3>
         </Link>
-        <img
-          src={topLogo}
-          alt="logo"
-          height="30px"
-          width="100px"
-          className="m-auto relative sm:relative sm:bottom-96
-       bottom-14"
-        />
 
-        <h3
-          className="text-white text-center font-bold text-4xl relative bottom-0 sm:relative sm:bottom-24 sm:text-6xl
-         "
-        >
-          SIGN IN
-        </h3>
-        <form
-          action=""
-          method="post"
-          className="flex flex-col gap-4 mt-7 sm:flex sm:flex-col sm:gap-32"
-        >
-          <div
-            className="flex flex-col gap-2 relative 
-          right-10 sm:relative sm:right-0 sm:flex sm:flex-col sm:gap-6"
-          >
-            <label
-              htmlFor="email"
-              className="text-white text-semibold text-xl 
-            sm:text-4xl uppercase"
-            >
-              Email:{" "}
-            </label>
+        <img src={topLogo} alt="logo" height="30px" width="100px" className='m-auto relative
+       bottom-14 sm:relative sm:bottom-24'/>
+        <h3 className='text-white text-center font-bold text-4xl relative bottom-0 
+         sm:relative sm:bottom-10'>SIGN IN</h3> 
+        <form action="" method="post" className='flex flex-col gap-4 mt-7 '>
+        <div className='flex flex-col gap-2 relative 
+          right-10 sm:relative sm:right-0'>
+            <label htmlFor="email" className='text-white text-semibold text-xl 
+            sm:text-lg uppercase'>Email:</label>
             <input
               type="email"
               id="email"
               name="email"
-              className="h-12 border 
+              className='h-12 border 
               rounded-lg text-xl font-semibold
-              w-[500px] sm:p-5 sm:text-3xl sm:h-24
-               p-3 sm:w-[600px]"
+              w-[500px]
+               p-3 sm:h-12 sm:w-72'
             />
           </div>
-          <div
-            className="flex flex-col gap-2 relative right-10
-          sm:relative sm:right-0 sm:flex sm:flex-col sm:gap-6"
-          >
-            <label
-              htmlFor="password"
-              className="text-white text-semibold 
-            text-xl sm:text-4xl uppercase"
-            >
-              Password:
-            </label>
+          <div className='flex flex-col gap-2 relative right-10
+          sm:relative sm:right-0'>
+            <label htmlFor="password" className='text-white text-semibold 
+            text-xl sm:text-lg uppercase'>Password:</label>
             <input
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               id="password"
               name="password"
-              className="h-12 border rounded-lg
-              w-[500px] sm:w-[600px] sm:h-24
+              className='h-12 border rounded-lg
+              w-[500px]
                text-xl 
-              font-semibold sm:p-5 sm:text-3xl"
+              font-semibold p-3 sm:h-12 sm:w-72'
             />
-            <span
-              className="relative left-[460px] cursor-pointer text-black bottom-11 sm:relative sm:bottom-20 sm:ml-[100px]"
-              onClick={togglePasswordVisibility}
-            >
-              {showPassword ? (
-                <AiOutlineEye size={30} />
-              ) : (
-                <AiOutlineEyeInvisible size={30} />
-              )}
-            </span>
+          <span
+        className="relative left-[460px] cursor-pointer text-black bottom-11 sm:left-64 sm:relative"
+        onClick={togglePasswordVisibility}
+      >
+        {showPassword ? (
+          <AiOutlineEye size={30} /> 
+        ) : (
+          <AiOutlineEyeInvisible size={30} /> 
+        )}
+      </span>
           </div>
-          <Link
-            to="/admin"
-            className="bg-white text-black border rounded-2xl p-3
-          sm:p-8 w-fit pl-16 pr-16 sm:pl-20 sm:pr-20
-           m-auto font-bold sm:relative sm:right-0 text-2xl relative sm:text-4xl 
-           right-7 hover:bg-[#3FF3FF]"
-          >
-            <button type="submit">LOGIN</button>
-          </Link>
+          <Link to= '/admin' className='bg-white text-black border rounded-2xl p-3  w-fit pl-16 pr-16
+           m-auto font-bold sm:relative sm:right-0 text-lg relative right-7 hover:bg-[#3FF3FF]'><button type="submit" 
+          >LOGIN</button>
+           </Link>
         </form>
       </div>
     </div>
