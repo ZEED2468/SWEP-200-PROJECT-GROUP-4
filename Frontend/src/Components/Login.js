@@ -4,20 +4,54 @@ import face from "../img/Ellipse 3.svg";
 import back from "../img/assets/Group 4.png";
 import topLogo from "../img/Group 6.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const background = {
   backgroundImage: `url(${back})`,
-  backgroundSize: "cover",
+  backgroundSize: "contain",
   height: "70vh",
   backgroundRepeat: "no-repeat",
 };
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
+  const [error, setError] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
+  const login = async (email, password) => {
+    setIsLoading(true);
+    const response = await fetch("/api/v1/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const json = await response.json();
+    console.log(json);
+
+    if (!response.ok) {
+      setError(json.msg);
+      console.log(error);
+      setIsLoading(false);
+    }
+    if (response.ok) {
+      navigate("/verificationpage");
+      setIsLoading(false);
+    }
+  };
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (email && password) {
+      login(email, password);
+    }
   };
 
   return (
@@ -59,7 +93,18 @@ const Login = () => {
           className="m-auto sm:relative sm:bottom-8 sm:left-10 sm:w-32 sm:h-28"
         />
       </div>
-      <div className="flex flex-col m-auto justify-evenly">
+
+      <div className="flex flex-col m-auto sm:flex sm:flex-col">
+        <Link to={"/tokenlogin"}>
+          <h3
+            className="text-white pointer relative left-[420px] bottom-6 border border-[#3FF3FF]
+             rounded-3xl text-center w-fit p-3 pl-7 pr-7 sm:relative sm:bottom-44 sm:left-24 sm:p-2 sm:pl-3 sm:pr-3 
+             sm:text-sm sm:text-white sm:bg-black"
+          >
+            SUPERVISOR
+          </h3>
+        </Link>
+
         <img
           src={topLogo}
           alt="logo"
@@ -74,7 +119,11 @@ const Login = () => {
         >
           SIGN IN
         </h3>
-        <form action="" method="post" className="flex flex-col gap-4 mt-7 ">
+        <form
+          action=""
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 mt-7 "
+        >
           <div
             className="flex flex-col gap-2 relative 
           right-10 sm:relative sm:right-0"
@@ -90,6 +139,9 @@ const Login = () => {
               type="email"
               id="email"
               name="email"
+              value={email}
+              required
+              onChange={(e) => setEmail(e.target.value)}
               className="h-12 border 
               rounded-lg text-xl font-semibold
               w-[500px]
@@ -111,6 +163,9 @@ const Login = () => {
               type={showPassword ? "text" : "password"}
               id="password"
               name="password"
+              value={password}
+              required
+              onChange={(e) => setPassword(e.target.value)}
               className="h-12 border rounded-lg
               w-[500px]
                text-xl 
@@ -127,13 +182,24 @@ const Login = () => {
               )}
             </span>
           </div>
-          <Link
-            to="/admin"
-            className="bg-white text-black border rounded-2xl p-3  w-fit pl-16 pr-16
-           m-auto font-bold sm:relative sm:right-0 text-lg relative right-7 hover:bg-[#3FF3FF]"
+
+          <button
+            disabled={isLoading}
+            type="submit"
+            className="bg-white text-black border rounded-2xl p-3 w-fit pl-16 pr-16
+           m-auto font-bold text-lg hover:bg-[#3FF3FF] relative bottom-5"
           >
-            <button type="submit">LOGIN</button>
-          </Link>
+            {isLoading ? <h2>login in....</h2> : <h2>LOGIN</h2>}
+          </button>
+
+          <div>
+            {error && (
+              <p className=" bg-white p-2 m-3 rounded-sm text-red-500 font-extrabold text-center ">
+                {" "}
+                {error}
+              </p>
+            )}
+          </div>
         </form>
       </div>
     </div>
