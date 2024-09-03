@@ -1,27 +1,12 @@
 import logo from "../img/Group 6.png";
 import hlogo from "../img/Group 7.png";
-import justdoit from "../img/check.png";
+import mark from "../img/question_mark.png";
 import { NavLinks } from '.';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 
-
-function ConfirmedPage() {
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    // Timeout for navigation to result
-    const timer = setTimeout(() => {
-      navigate('/result'); 
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [navigate]);
-
-return (
+function FailedPage() {
+  return (
     <div className="flex h-screen">
       <div className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8">
         <img src={logo} alt="" className="h-12 mb-8" />
@@ -45,32 +30,37 @@ return (
             </ul>
           <div className="flex flex-row items-center">
             <img
-              src="placeholder" // image placeholder
+              src="" // image placeholder
               alt="Profile"
               className="mr-2 w-8 h-8 border-2 border-cyan-400 rounded-full object-cover"
             />
           <button class="px-4 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors">
             Log out
-        </button>
-        </div>
+          </button>
+          </div>
         </nav>
 
-         <section className="flex-1 flex flex-col items-center justify-center">
-          <div>
-            <div className="flex items-center justify-center">
-              <div className="mt-10 mb-10 flex items-center justify-center">
-                <img src={justdoit} alt=""/> 
-              </div>
+        <section className="mt-16 justify-center items-center">
+        <img src={mark} alt="" className="ml-6"/>
+            <div>
+            <h1 className="mt-8 text-2xl font-bold">Verification Failed</h1>
+            <p className="mt-2 text-lg pl-6">Enter Matric Number</p>
+            <div className="mt-4">
+              <Link to = '/notfound'><input
+                type="text"
+                placeholder="Matric Number"
+                className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              /></Link>
+              <Link to = '/confirmedpage'><button className="ml-4 px-6 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors">
+                Submit
+              </button></Link>
             </div>
-            <div className="flex flex-col items-center justify-center">
-            <h1 className="text-2xl font-semibold mb-4">Verification confirmed</h1>
-              <h4>Please wait a second.....</h4>
             </div>
-          </div>
-        </section>
-      </div>
+          </section>
+    
     </div>
+  </div>  
   );
 }
 
-export default ConfirmedPage;
+export default FailedPage;

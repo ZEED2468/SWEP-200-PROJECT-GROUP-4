@@ -3,6 +3,7 @@ export default {
   purge: ['./src/**/*.{html,js,jsx,ts,tsx}'],
   content: ['./index.html',
    "./src/*.{jsx,js}"],
+
   theme: {
     screens: {
       '2xl': { 'max': '1535px' },

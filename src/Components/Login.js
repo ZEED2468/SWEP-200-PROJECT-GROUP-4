@@ -1,32 +1,20 @@
-import React, { useState } from "react";
+import React, {useState} from 'react'
 import logo from "../img/Group 7.png";
 import face from "../img/Ellipse 3.svg";
 import back from "../img/assets/Group 4.png"
 import topLogo from "../img/Group 6.png";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'; 
+import { Link } from 'react-router-dom';
+
 
 const background = {
   backgroundImage: `url(${back})`,
   backgroundSize: "cover",
   height: "70vh",
-  backgroundRepeat: "no-repeat",
-};
+  backgroundRepeat: "no-repeat"
+}
 
 const Login = () => {
-  const login = async (email, password, name) => {
-    const response = await fetch("/api/v1/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, name }),
-    });
-    const json = await response.json();
-    console.log(json);
-    if (!response.ok) {
-      console.log(error);
-      setError(json.msg);
-    }
-  };
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -68,7 +56,7 @@ const Login = () => {
               type="email"
               id="email"
               name="email"
-              className="h-12 border 
+              className='h-12 border 
               rounded-lg text-xl font-semibold
               w-[500px]
                p-3 sm:h-12 sm:w-72'
@@ -79,7 +67,7 @@ const Login = () => {
             <label htmlFor="password" className='text-white text-semibold 
             text-xl sm:text-lg uppercase'>Password:</label>
             <input
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               id="password"
               name="password"
               className='h-12 border rounded-lg
@@ -105,7 +93,7 @@ const Login = () => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

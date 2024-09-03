@@ -1,6 +1,8 @@
 import logo from "../img/Group 6.png";
 import hlogo from "../img/Group 7.png";
 import mark from "../img/question_mark.png";
+import { NavLinks } from '.';
+import { Link } from 'react-router-dom';
 
 
 function FailedPage() {
@@ -17,14 +19,18 @@ function FailedPage() {
         <img src={hlogo} alt="" className="h-6 mt-1"/>
         <h1 className="text-2xl font-bold ml-3">Face Edu</h1>
         </div>
-          <ul className="flex space-x-40">
-            <li className="text-lg font-semibold">Home</li>
-            <li className="text-lg font-semibold text-black">Verification</li>
-            <li className="text-lg font-semibold">Result</li>
-          </ul>
+        <ul className='flex flex-row ml-[100px] gap-36'>
+                  {NavLinks.map((lists) => (
+                 <li key={lists} className='text-black text-center hover:text-cyan-400 text-lg
+                  font-semibold mt-2'>
+                  <Link to={lists.destination} className='cursor-pointer mr-7'>
+                    {lists.text}</Link>
+                 </li> )
+                  )}
+            </ul>
           <div className="flex flex-row items-center">
             <img
-              src="placeholder" // image placeholder
+              src="" // image placeholder
               alt="Profile"
               className="mr-2 w-8 h-8 border-2 border-cyan-400 rounded-full object-cover"
             />
@@ -40,14 +46,14 @@ function FailedPage() {
             <h1 className="mt-8 text-2xl font-bold">Verification Failed</h1>
             <p className="mt-2 text-lg pl-6">Enter Matric Number</p>
             <div className="mt-4">
-              <input
+              <Link to = '/notfound'><input
                 type="text"
                 placeholder="Matric Number"
                 className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-              />
-              <button className="ml-4 px-6 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors">
+              /></Link>
+              <Link to = '/confirmedpage'><button className="ml-4 px-6 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors">
                 Submit
-              </button>
+              </button></Link>
             </div>
             </div>
           </section>
