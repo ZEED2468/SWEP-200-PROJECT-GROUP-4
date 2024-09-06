@@ -19,7 +19,6 @@ function ConfirmedPage() {
 
   const navigate = useNavigate();
   useEffect(() => {
-    // Timeout for navigation to result
     const timer = setTimeout(() => {
       navigate('/result'); 
     }, 2000);
