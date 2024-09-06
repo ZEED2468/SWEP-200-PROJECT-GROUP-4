@@ -1,6 +1,6 @@
 const Supervisor = require("../models/Supervisor");
-const SuperAdmin = require("../models/SuperAdminModel");
-const Token = require("../models/TokenModel");
+
+const mongoose = require("mongoose");
 
 const findUserLogs = async (req, res) => {
   const { id } = req.params;

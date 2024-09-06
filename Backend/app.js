@@ -11,6 +11,7 @@ const connectDB = require("./db/connect");
 
 //routes
 const authRouter = require("./routes/authRoute");
+const userRouter = require("./routes/userRoute");
 
 //middleware
 const notFound = require("./middleware/not-found");
@@ -25,6 +26,7 @@ app.use(cors());
 app.use(cookieParser(process.env.JWT_SECRET)); // signing our cookies
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/admin", userRouter);
 app.get("/cookies", (req, res) => {
   console.log(req.signedCookies);
   res.send("FaceEdu Api");
