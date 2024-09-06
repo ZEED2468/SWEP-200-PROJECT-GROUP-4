@@ -1,34 +1,30 @@
-import { useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import logo from "../img/Group 6.png";
 import hlogo from "../img/Group 7.png";
-import spiral from "../img/bgi.png";
 import justdoit from "../img/check.png";
 import { NavLinks } from '.';
+import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 
 function ConfirmedPage() {
 
-  const background = {
-    backgroundImage: `url(${spiral})`,
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat"
-  }
-
   const navigate = useNavigate();
+
   useEffect(() => {
+    // Timeout for navigation to result
     const timer = setTimeout(() => {
       navigate('/result'); 
-    }, 2000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [navigate]);
 
+
 return (
     <div className="flex h-screen">
-      <div className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8"
-      style={background}>
+      <div className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8">
         <img src={logo} alt="" className="h-12 mb-8" />
         <h1 className="text-2xl font-bold">Face Edu</h1>
         {/* <p className="mt-4">@SWEP200 GROUP 4</p> */}
