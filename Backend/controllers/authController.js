@@ -5,6 +5,7 @@ const { createJWT, attachCoookiesToResponse } = require("../utils/jwt");
 const createTokenUser = require("../utils/createTokenUser");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
+const Supervisor = require("../models/Supervisor");
 
 const generatedCodes = new Set();
 function generateUniqueCode() {
@@ -67,25 +68,54 @@ const register = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ userdetails });
 };
 
+const updateTokenIfExpired = async () => {
+  try {
+    //Check if token is older than 6hours
+    const now = Date.now();
+    //const sixHours = 6 * 60 * 60 * 1000;
+    const sixHours = 6 * 60 * 60 * 1000;
+
+    const expiredToken = await Token.find({
+      tokenCreatedAt: { $lt: new Date(now - sixHours) },
+    });
+    //update each token
+    for (let token of expiredToken) {
+      token.token = generateUniqueCode();
+      token.tokenCreatedAt = now;
+
+      await token.save();
+      // console.log(`Token updated for id ${token.superadmin_id}`);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+setInterval(updateTokenIfExpired, 10 * 1000);
+
 const login = async (req, res) => {
   //check for email and password
   const { email, password, token, name } = req.body;
   //Login via token
 
-  if (token) {
+  if (token && name) {
     const usertoken = await Token.findOne({ token });
+
     if (!usertoken) {
       throw new CustomError.UnauthenticatedError("Invalid Credentials");
     }
     const token_id = usertoken._id;
 
+    const supervisor = await Supervisor.create({ name, token: token_id });
+
     const user = await User.findOne({ token_id });
-    //const tokenUser = createJWT(user);
+
     const tokenUser = createTokenUser(user);
 
     attachCoookiesToResponse({ res, user: tokenUser });
 
-    res.status(StatusCodes.OK).json({ user, tokenUser });
+    res
+      .status(StatusCodes.OK)
+      .json({ user, tokenUser, supervisor: supervisor.name });
   } else {
     try {
       const user = await User.login(email, password);

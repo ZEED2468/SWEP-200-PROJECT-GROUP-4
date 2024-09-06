@@ -17,7 +17,6 @@ app.use(express.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-const app = express();
 app.use(express.json());
 //database
 const connectDB = require("./db/connect");
@@ -37,16 +36,17 @@ app.use(helmet());
 app.use(cors());
 app.use(cookieParser(process.env.JWT_SECRET)); // signing our cookies
 
-app.get("/", (req, res) => {
+app.use("/api/v1/auth", authRouter);
+app.get("/cookies", (req, res) => {
   console.log(req.signedCookies);
   res.send("FaceEdu Api");
 });
-
-app.use("/api/v1/auth", authRouter);
+app.get("/", (req, res) => {
+  res.json({ msg: "Welcome to the app" });
+});
 
 app.use(notFound);
 app.use(errorHandlerMiddleware);
->>>>>>> dffd0868dbf56f1b0530feb6b3d108ccbdb32aa0
 
 const port = process.env.PORT || 5000;
 
@@ -56,7 +56,8 @@ app.use('/', router);
 const start = async () => {
   try {
     //Connect to database here
-   await connectDB(process.env.MONGO_URI);
+    await connectDB(process.env.MONGO_URI);
+
     app.listen(port, console.log(`Server is Listening on port... ${port}`));
   } catch (error) {
     console.log(error);

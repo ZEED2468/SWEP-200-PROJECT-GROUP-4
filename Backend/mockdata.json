@@ -1,0 +1,222 @@
+[
+  {
+    "name": "uaberdalgy0",
+    "email": "evonsalzberg0@cyberchimps.com",
+    "matric_no": "csc/2021/234",
+    "faculty": "physics",
+    "department": "electrical engineering",
+    "courses": ["Mth 202", "Eng 101", "Csc 201"],
+    " profile_pic_url": "http://dummyimage.com/162x100.png/5fa2dd/ffffff",
+    "expiresAt": "2024-02-27T10:26:26Z",
+    "createdAt": "2024-05-16T02:57:57Z"
+  },
+  {
+    "name": "lwoolis1",
+    "email": "njubert1@utexas.edu",
+    "matric_no": "phy/2022/202",
+    "faculty": "english",
+    "department": "music",
+    "courses": ["Phy 202", "Eng 101", "Csc 201", "Stt 201", "Chm 202"],
+    " profile_pic_url": "http://dummyimage.com/172x100.png/5fa2dd/ffffff",
+    "expiresAt": "2024-02-04T11:49:06Z",
+    "createdAt": "2024-08-15T12:18:59Z"
+  },
+  {
+    "name": "csellman2",
+    "email": "rcranmor2@google.it",
+    "matric_no": "eee/2020/129",
+    "faculty": "science",
+    "department": "statistics",
+    "courses": ["Mth 202", "Eng 101", "Chm 202", "Phy 202"],
+    " profile_pic_url": "http://dummyimage.com/208x100.png/dddddd/000000",
+    "expiresAt": "2024-06-10T09:02:45Z",
+    "createdAt": "2023-12-08T22:52:17Z"
+  },
+  {
+    "name": "rguyot3",
+    "email": "iathow3@bloglovin.com",
+    "matric_no": "mee/2019/289",
+    "faculty": "technology",
+    "department": "physics",
+    "courses": ["Mth 202", "Eng 101", "Csc 201", "Mee 205", "Mee 201"],
+    " profile_pic_url": "http://dummyimage.com/128x100.png/dddddd/000000",
+    "expiresAt": "2023-07-01T01:22:34Z",
+    "createdAt": "2024-06-05T15:51:13Z"
+  },
+  {
+    "name": "ddougary4",
+    "email": "clevi4@cbsnews.com",
+    "matric_no": "bio/2021/134",
+    "faculty": "mechanical enginnering",
+    "department": "liberal arts",
+    "courses": ["Mth 202", "Cpe 201", "Csc 201", "Mth 202"],
+    " profile_pic_url": "http://dummyimage.com/125x100.png/dddddd/000000",
+    "expiresAt": "2024-03-24T00:08:08Z",
+    "createdAt": "2024-06-08T21:35:14Z"
+  },
+  {
+    "name": "cmcelree5",
+    "email": "cegalton5@multiply.com",
+    "matric_no": "csc/2021/229",
+    "faculty": "physics",
+    "department": "music",
+    "courses": ["Mth 202", "Lit 419", "Csc 201"],
+    " profile_pic_url": "http://dummyimage.com/168x100.png/ff4444/ffffff",
+    "expiresAt": "2023-09-12T18:14:24Z",
+    "createdAt": "2024-02-03T22:15:26Z"
+  },
+  {
+    "name": "fgomby6",
+    "email": "hwilkinson6@alibaba.com",
+    "matric_no": "bio/2022/104",
+    "faculty": "physics",
+    "department": "music",
+    "courses": ["Mth 202", "His 101", "Csc 201", "Cpe 201"],
+    " profile_pic_url": "http://dummyimage.com/213x100.png/cc0000/ffffff",
+    "expiresAt": "2024-05-17T17:04:45Z",
+    "createdAt": "2023-09-19T23:02:56Z"
+  },
+  {
+    "name": "emaccraw7",
+    "email": "baslett7@ucla.edu",
+    "matric_no": "lit/2018/209",
+    "faculty": "technology",
+    "department": "music",
+    "courses": ["Mth 204", "Mus 101", "Csc 206"],
+    " profile_pic_url": "http://dummyimage.com/123x100.png/5fa2dd/ffffff",
+    "expiresAt": "2023-11-30T13:52:57Z",
+    "createdAt": "2023-10-17T22:28:30Z"
+  },
+  {
+    "name": "mgirardoni8",
+    "email": "kupwood8@aol.com",
+    "matric_no": "phm/2021/222",
+    "faculty": "technology",
+    "department": "pharmacy",
+    "courses": ["Mth 202", "Phm 101", "Bio 201", "Mus 101"],
+    " profile_pic_url": "http://dummyimage.com/198x100.png/dddddd/000000",
+    "expiresAt": "2024-07-21T02:48:59Z",
+    "createdAt": "2024-07-20T01:48:52Z"
+  },
+  {
+    "name": "mpallaske9",
+    "email": "srosetti9@360.cn",
+    "matric_no": "phy/2022/111",
+    "faculty": "english",
+    "department": "liberal arts",
+    "courses": ["Mth 202", "Stt 101", "Lib 201"],
+    " profile_pic_url": "http://dummyimage.com/184x100.png/cc0000/ffffff",
+    "expiresAt": "2023-11-01T21:03:11Z",
+    "createdAt": "2023-11-22T22:17:39Z"
+  },
+  {
+    "name": "omartlanda",
+    "email": "ddiwella@about.com",
+    "matric_no": "art/2016/294",
+    "faculty": "social sciences",
+    "department": "computer",
+    "courses": ["Aee 202", "Art 101", "Csc 201"],
+    " profile_pic_url": "http://dummyimage.com/246x100.png/ff4444/ffffff",
+    "expiresAt": "2024-04-17T10:40:55Z",
+    "createdAt": "2024-03-17T13:04:37Z"
+  },
+  {
+    "name": "ofairpob",
+    "email": "pglazzardb@merriam-webster.com",
+    "matric_no": "csc/2021/333",
+    "faculty": "medicine",
+    "department": "electrical engineering",
+    "courses": ["Mth 202", "Chm 202", "Mth 204", "Cpe 201"],
+    " profile_pic_url": "http://dummyimage.com/137x100.png/5fa2dd/ffffff",
+    "expiresAt": "2023-10-09T21:59:52Z",
+    "createdAt": "2023-08-01T14:57:07Z"
+  },
+  {
+    "name": "pecobc",
+    "email": "sbeekec@google.it",
+    "matric_no": "csc/2021/286",
+    "faculty": "english",
+    "department": "music",
+    "courses": ["Mth 202", "Eng 101", "Csc 201", "Bio 201", "His 101"],
+    " profile_pic_url": "http://dummyimage.com/181x100.png/ff4444/ffffff",
+    "expiresAt": "2024-05-03T02:33:51Z",
+    "createdAt": "2023-09-19T17:14:49Z"
+  },
+  {
+    "name": "oblabberd",
+    "email": "bfabbd@sciencedaily.com",
+    "matric_no": "mee/2019/349",
+    "faculty": "mechanical enginnering",
+    "department": "liberal arts",
+    "courses": ["Aee 202", "Phy 101", "Csc 201"],
+    " profile_pic_url": "http://dummyimage.com/148x100.png/dddddd/000000",
+    "expiresAt": "2023-07-25T12:13:29Z",
+    "createdAt": "2023-08-20T05:17:45Z"
+  },
+  {
+    "name": "yfurtadoe",
+    "email": "bjagglie@naver.com",
+    "matric_no": "eee/2021/529",
+    "faculty": "technology",
+    "department": "electrical engineering",
+    "courses": ["Psy 202", "Bio 101", "Csc 201", "Mus 101"],
+    " profile_pic_url": "http://dummyimage.com/189x100.png/cc0000/ffffff",
+    "expiresAt": "2023-08-15T09:32:49Z",
+    "createdAt": "2024-06-12T14:47:31Z"
+  },
+  {
+    "name": "cpendlentonf",
+    "email": "pshearwoodf@baidu.com",
+    "matric_no": "phm/2021/252",
+    "faculty": "technology",
+    "department": "liberal arts",
+    "courses": ["Mth 202", "Eng 101", "Csc 201"],
+    " profile_pic_url": "http://dummyimage.com/126x100.png/ff4444/ffffff",
+    "expiresAt": "2023-07-26T08:26:21Z",
+    "createdAt": "2024-08-09T11:00:01Z"
+  },
+  {
+    "name": "mmeekg",
+    "email": "jdagwellg@biblegateway.com",
+    "matric_no": "mth/2021/231",
+    "faculty": "physics",
+    "department": "statistics",
+    "courses": ["Mth 202", "Mth 101", "Phy 201", "Stt 101"],
+    " profile_pic_url": "http://dummyimage.com/173x100.png/dddddd/000000",
+    "expiresAt": "2023-07-03T07:27:16Z",
+    "createdAt": "2023-08-23T02:45:58Z"
+  },
+  {
+    "name": "nwittierh",
+    "email": "jluckhursth@dell.com",
+    "matric_no": "lib/2021/167",
+    "faculty": "physics",
+    "department": "music",
+    "courses": ["Mth 202", "Phy 101", "His 201"],
+    " profile_pic_url": "http://dummyimage.com/177x100.png/ff4444/ffffff",
+    "expiresAt": "2023-11-14T03:48:00Z",
+    "createdAt": "2023-07-22T04:29:05Z"
+  },
+  {
+    "name": "lrayntoni",
+    "email": "gcastlakei@elpais.com",
+    "matric_no": "mth/2021/191",
+    "faculty": "mathematics",
+    "department": "statistics",
+    "courses": ["Mth 202", "Eng 101", "Csc 201", "Csc 206"],
+    " profile_pic_url": "http://dummyimage.com/242x100.png/dddddd/000000",
+    "expiresAt": "2024-01-15T07:59:51Z",
+    "createdAt": "2024-01-29T01:45:20Z"
+  },
+  {
+    "name": "cglascottj",
+    "email": "bevesj@artisteer.com",
+    "matric_no": "csc/2021/279",
+    "faculty": "science",
+    "department": "physics",
+    "courses": ["Mth 202", "Eng 101", "Csc 201"],
+    " profile_pic_url": "http://dummyimage.com/230x100.png/dddddd/000000",
+    "expiresAt": "2024-05-10T18:07:50Z",
+    "createdAt": "2023-12-23T21:53:11Z"
+  }
+]
