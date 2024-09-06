@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
 import logo from "../img/Group 6.png";
+import spiral from "../img/bgi.png";
 import hlogo from "../img/Group 7.png";
 import { NavLinks } from '.';
 import { Link } from 'react-router-dom';
 
 const Result = () => {
+
+  const background = {
+    backgroundImage: `url(${spiral})`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat"
+  }
+
   // Hardcoded data to make sure it's working.
   const [studentData] = useState({
     registrationNo: "CSC/2025/341",
@@ -30,7 +38,8 @@ const Result = () => {
 
   return (
     <div className="flex h-screen">
-      <div className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8">
+      <div className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8"
+      style={background}>
         <img src={logo} alt="Logo" className="h-12 mb-8" />
         <h1 className="text-2xl font-bold">Face Edu</h1>
       </div>
@@ -107,5 +116,9 @@ const Result = () => {
 };
 
 export default Result;
-// justify-between items-start
+
+    
+
+
+    // justify-between items-start
 
