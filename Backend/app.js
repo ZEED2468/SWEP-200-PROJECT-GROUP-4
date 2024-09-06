@@ -2,27 +2,23 @@ require("dotenv").config();
 require("express-async-errors");
 const cors = require("cors");
 const helmet = require("helmet");
+
 const express = require("express");
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser'); 
 const student = require('./models/student.js');
-const router = require('./routes/index.js');
+
 
 const app = express();
-
-//middlewares
 app.use(express.json());
-app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
 
-app.use(express.json());
 //database
 const connectDB = require("./db/connect");
 
 //routes
 const authRouter = require("./routes/authRoute");
+const matricRoute = require("./routes/matricRoute.js");
 
 //middleware
 const notFound = require("./middleware/not-found");
@@ -34,24 +30,30 @@ app.use(morgan("tiny"));
 app.use(helmet());
 
 app.use(cors());
-app.use(cookieParser(process.env.JWT_SECRET)); // signing our cookies
+app.use(cookieParser(process.env.JWT_SECRET));
+app.use(express.static('public'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+// signing our cookies
 
 app.use("/api/v1/auth", authRouter);
-app.get("/cookies", (req, res) => {
-  console.log(req.signedCookies);
-  res.send("FaceEdu Api");
-});
+app.use(matricRoute);
+app.use(notFound);
+app.use(errorHandlerMiddleware);
+
 app.get("/", (req, res) => {
   res.json({ msg: "Welcome to the app" });
 });
 
-app.use(notFound);
-app.use(errorHandlerMiddleware);
+app.get("/cookies", (req, res) => {
+  console.log(req.signedCookies);
+  res.send("FaceEdu Api");
+});
+
+
 
 const port = process.env.PORT || 5000;
 
-// routes
-app.use('/', router);
 
 const start = async () => {
   try {
