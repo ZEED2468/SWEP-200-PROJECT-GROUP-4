@@ -84,7 +84,7 @@ const updateTokenIfExpired = async () => {
       token.tokenCreatedAt = now;
 
       await token.save();
-      console.log(`Token updated for id ${token.superadmin_id}`);
+      // console.log(`Token updated for id ${token.superadmin_id}`);
     }
   } catch (error) {
     console.log(error);
