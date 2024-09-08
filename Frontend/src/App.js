@@ -10,6 +10,7 @@ import ConfirmedPage from "./Components/Confirmed.js";
 import FailedPage from "./Components/Failed.js";
 import Result from "./Components/Result.js";
 import NotFound from "./Components/NotFound.js";
+import FaceRegistration from "./Components/faceRegistration.js";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/failedpage" element={<FailedPage />} />
             <Route path="/result" element={<Result />} />
             <Route path="/notfound" element={<NotFound />} />
+            <Route path="/faceregistration" element={<FaceRegistration />} />
           </Routes>
         </BrowserRouter>
       </div>

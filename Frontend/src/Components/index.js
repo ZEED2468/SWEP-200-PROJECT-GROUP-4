@@ -1,5 +1,6 @@
 export const NavLinks = [
     {destination: '/', text: "Home"},
-    {destination: 'verification', text: "Verification"},
-    {destination: 'result', text: "Result"},
+    {destination: '/result', text: "Result"},
+    {destination: '/verificationpage', text: "Verification"},
+    {destination: '/faceregistration', text: "Registration"}
 ];
