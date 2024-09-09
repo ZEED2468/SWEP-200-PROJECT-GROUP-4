@@ -186,7 +186,7 @@ export const UploadFromWebcam = ({ onPhotoUpload, loading }) => {
         <Form.Item label="Webcam">
           <Select
             defaultValue="Select Webcam"
-            style={{ width: 500 }}
+            style={{ width: 300 }}
             onChange={(value) => setSelectedWebcam(value)}
           >
             {inputDevices.map((device) => (
