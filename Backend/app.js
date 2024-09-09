@@ -14,7 +14,6 @@ const connectDB = require("./db/connect");
 const authRouter = require("./routes/authRoute");
 const userRouter = require("./routes/userRoute");
 const studentRoutes = require("./routes/studentRoutes"); // import student routes
-const studentRoutes = require("./routes/studentRoutes"); // import student routes
 
 //middleware
 const notFound = require("./middleware/not-found");
