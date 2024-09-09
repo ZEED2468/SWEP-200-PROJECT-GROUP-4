@@ -4,6 +4,7 @@ import { ApolloClient, InMemoryCache } from "@apollo/client"; // use the updated
 import { createHttpLink } from "@apollo/client"; // for HTTP linking
 import { ApolloProvider } from "@apollo/client/react"; // updated Apollo provider
 import { setContext } from "@apollo/client/link/context"; // for auth
+import { AuthContextProvider } from "./context/AuthContext";
 
 // Define the HTTP link for GraphQL API
 const httpLink = createHttpLink({
@@ -33,8 +34,10 @@ const client = new ApolloClient({
 // Export the ApolloProvider wrapping the App component
 export default function ApolloProviderWrapper() {
   return (
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
+    <AuthContextProvider>
+      <ApolloProvider client={client}>
+        <App />
+      </ApolloProvider>
+    </AuthContextProvider>
   );
 }

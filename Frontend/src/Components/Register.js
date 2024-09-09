@@ -5,6 +5,7 @@ import back from "../img/group.png";
 import topLogo from "../img/Group 6.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const background = {
   backgroundImage: `url(${back})`,
@@ -14,6 +15,8 @@ const background = {
 };
 
 const Register = () => {
+  const { dispatch } = useAuthContext();
+
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState(null);
@@ -39,9 +42,11 @@ const Register = () => {
       setPassword("");
     }
     if (response.ok) {
+      localStorage.setItem("user", JSON.stringify(json));
+      dispatch({ type: "LOGIN", payload: json });
+
       navigate("/admin");
       setIsLoading(false);
-      localStorage.setItem("user", JSON.stringify(json));
     }
   };
 
@@ -210,11 +215,7 @@ const Register = () => {
         sm:relative sm:right-0 relative right-5"
         >
           Already have an account?{" "}
-          <Link
-            to="/login"
-            target="_blank"
-            className="text-[#3FF3FF] text-xl sm:text-sm"
-          >
+          <Link to="/login" className="text-[#3FF3FF] text-xl sm:text-sm">
             Sign in
           </Link>
         </p>

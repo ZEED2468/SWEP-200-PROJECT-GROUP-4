@@ -136,7 +136,7 @@ const Home = () => {
           </p>
           <div className="flex flex-row gap-2 justify-center">
             <Link
-              to="/login"
+              to="/admin"
               className="bg-black text-white border rounded-3xl
         hover:bg-[#3FF3FF] hover:text-black hover:border hover:rounded-3xl pl-15"
             >

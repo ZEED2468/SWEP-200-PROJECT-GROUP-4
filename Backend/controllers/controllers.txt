@@ -5,3 +5,40 @@ helllo it's victor
 josh123$A
 
 adJosh45$2
+
+
+
+
+ const login = async (email, password, name) => {
+    const response = await fetch("/api/v1/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password, name }),
+    });
+    const json = await response.json();
+    console.log(json);
+    if (!response.ok) {
+      console.log(error);
+      setError(json.msg);
+    }
+  };
+
+
+
+
+   const handleClick = async () => {
+    if (!user) {
+      return;
+    }
+    const response = await fetch(`/api/workouts/${workout._id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
+    if (response.ok) {
+      dispatch({ type: "DELETE_WORKOUT", payload: json });
+    }
+    setStateChange((prevState) => prevState + 1);
+  };
