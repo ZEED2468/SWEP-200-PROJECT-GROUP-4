@@ -28,6 +28,7 @@ app.use(cookieParser(process.env.JWT_SECRET)); // signing our cookies
 
 // routes
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/admin", userRouter);
 app.get("/cookies", (req, res) => {
   console.log(req.signedCookies);
   res.send("FaceEdu Api");
