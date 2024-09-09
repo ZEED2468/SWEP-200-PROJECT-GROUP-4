@@ -3,8 +3,8 @@ const StudentModel = require("../models/StudentModel"); // Import the Student mo
 const registerStudent = async (req, res) => {
   try {
     // Log the incoming request body and files for debugging
-    console.log("Request body:", req.body);
-    console.log("Files:", req.files);
+    // console.log("Request body:", req.body);
+    // console.log("Files:", req.files);
 
     const {
       name,
@@ -23,7 +23,7 @@ const registerStudent = async (req, res) => {
     try {
       parsedCourses = JSON.parse(courses);  // Courses are still sent as JSON array
     } catch (err) {
-      console.error("Error parsing courses:", err);
+      // console.error("Error parsing courses:", err);
       return res.status(400).json({ message: "Invalid courses format" });
     }
 
@@ -56,7 +56,7 @@ const registerStudent = async (req, res) => {
 
     res.status(201).json({ message: "Student registered successfully" });
   } catch (error) {
-    console.error("Error during student registration:", error.message);
+    // console.error("Error during student registration:", error.message);
     res.status(500).json({ message: "An error occurred during registration" });
   }
 };
