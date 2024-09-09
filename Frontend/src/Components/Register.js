@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import logo from "../img/Group 7.png";
 import face from "../img/Ellipse 3.svg";
-import back from "../img/assets/Group 4.png";
+import back from "../img/group.png";
 import topLogo from "../img/Group 6.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
@@ -59,7 +59,7 @@ const Register = () => {
   return (
     <div
       className="flex flex-row gap-8
-    border rounded-3xl w-[1000px] 
+    border rounded-3xl w-[1100px] 
     2xl:h-[200px] m-auto 
     relative top-32
     overflow-hidden sm:top-0
