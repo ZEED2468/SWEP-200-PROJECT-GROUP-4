@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import logo from "../img/Group 7.png";
 import face from "../img/Ellipse 3.svg";
-import back from "../img/assets/Group 4.png";
+import back from "../img/group.png";
 import topLogo from "../img/Group 6.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link } from "react-router-dom";

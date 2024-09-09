@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../img/Group 7.png";
-import back from "../img/assets/Group 4 (1).png";
+import back from "../img/group.png";
 import topLogo from "../img/Group 6.png";
 import { NavLinks } from ".";
 

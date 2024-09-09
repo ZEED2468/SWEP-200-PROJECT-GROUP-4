@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logo from "../img/Group 7.png";
-import back from "../img/assets/Group 4.png";
+import back from "../img/group.png";
 import topLogo from "../img/Group 6.png";
 import image from "../img/Human 4.png";
 import { NavLinks } from ".";
@@ -9,8 +9,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 const background = {
   backgroundImage: `url(${back})`,
-  backgroundSize: "contain",
-  height: "91vh",
+  backgroundSize: "cover",
+  height: "81vh",
   backgroundRepeat: "no-repeat",
 };
 
@@ -63,19 +63,28 @@ const Admin = () => {
   console.log(supervisor);
 
   return (
-    <div className="flex flex-col">
-      <header className="flex flex-row m-auto w-full border border-b-[#3FF3FF]">
-        <div className="flex flex-row p-3">
-          <img
-            src={logo}
-            alt="header-logo"
-            height="20px"
-            width="50px"
-            className="mt-2"
-          />
+    <div className="flex flex-col h-screen">
+      <header className="flex flex-row border-b-2 border-[#3FF3FF]">
+        <div className="flex flex-row p-4 bg-white">
+          <img src={logo} alt="header-logo" width="50px" />
           <h4 className="text-xl font-bold ml-3 mt-2">FaceEdu</h4>
-
-          <ul className="flex flex-row ml-[300px] gap-36">
+          <img
+            src={image}
+            alt="header-logo"
+            width="50px"
+            className="relative left-[1190px]"
+          />
+          <Link
+            to="/login"
+            target="_blank"
+            className="relative left-[1200px] border-[#3FF3FF]
+      border-2 p-1 rounded-2xl pl-4 pr-4 hover:bg-[#3FF3FF]"
+          >
+            <button type="button" className="font-bold">
+              Log out
+            </button>
+          </Link>
+          <ul className="flex flex-row gap-32 ml-64">
             {NavLinks.map((lists) => (
               <li
                 key={lists}
@@ -104,12 +113,12 @@ const Admin = () => {
       </header>
       <section
         className="flex flex-row w-full
-      sm:w-fit sm:flex sm:flex-col"
+      sm:w-fit sm:flex sm:flex-col h-[850px]"
       >
         <div
           className="flex flex-col justify-center
         sm:flex sm:flex-row sm:w-full w-96 bg-black
-         sm:rounded-none sm:h-28"
+         sm:rounded-none sm:h-28 min-h-[697px]"
           style={background}
         >
           <img

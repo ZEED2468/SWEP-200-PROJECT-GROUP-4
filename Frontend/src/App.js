@@ -11,6 +11,7 @@ import FailedPage from "./Components/Failed.js";
 import Result from "./Components/Result.js";
 import NotFound from "./Components/NotFound.js";
 import FaceRegistration from "./Components/faceRegistration.js";
+import FaceRegistration from "./Components/faceRegistration.js";
 import { useAuthContext } from "./hooks/useAuthContext.js";
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
             <Route path="/failedpage" element={<FailedPage />} />
             <Route path="/result" element={<Result />} />
             <Route path="/notfound" element={<NotFound />} />
+            <Route path="/faceregistration" element={<FaceRegistration />} />
             <Route path="/faceregistration" element={<FaceRegistration />} />
           </Routes>
         </BrowserRouter>
