@@ -59,9 +59,9 @@ const register = async (req, res) => {
   attachCoookiesToResponse({ res, user: tokenUser });
 
   const userdetails = {
-    superAdmin,
+    // superAdmin,
     createToken,
-    user,
+    // user,
     tokenUser,
   };
 
@@ -90,7 +90,7 @@ const updateTokenIfExpired = async () => {
     console.log(error);
   }
 };
-setInterval(updateTokenIfExpired, 10 * 1000);
+setInterval(updateTokenIfExpired, 20 * 60 * 1000);
 
 const login = async (req, res) => {
   //check for email and password

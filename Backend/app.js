@@ -7,12 +7,13 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
-//database connection
+//database connection connection
 const connectDB = require("./db/connect");
 
 //routes
 const authRouter = require("./routes/authRoute");
-const studentRoutes = require('./routes/studentRoutes'); // import student routes
+const userRouter = require("./routes/userRoute");
+const studentRoutes = require("./routes/studentRoutes"); // import student routes
 const faceVerificationRoutes = require('./routes/verificationRoutes'); // import face verification route
 
 //middleware
@@ -27,12 +28,14 @@ app.use(cors());
 app.use(cookieParser(process.env.JWT_SECRET)); // signing our cookies
 
 // routes
+// routes
 app.use("/api/v1/auth", authRouter);
-app.use('/api/v1/students', studentRoutes); // student routes
+app.use("/api/v1/admin", userRouter);
+app.use("/api/v1/students", studentRoutes); // student routes
 app.use('/api/v1', faceVerificationRoutes); // face verification route
 
 // Serve uploaded images
-app.use('/uploads', express.static('uploads'));
+app.use("/uploads", express.static("uploads"));
 
 // Basic route for testing
 app.get("/cookies", (req, res) => {
@@ -44,6 +47,7 @@ app.get("/", (req, res) => {
   res.json({ msg: "Welcome to the app" });
 });
 
+// Middleware for handling errors
 // Middleware for handling errors
 app.use(notFound);
 app.use(errorHandlerMiddleware);
