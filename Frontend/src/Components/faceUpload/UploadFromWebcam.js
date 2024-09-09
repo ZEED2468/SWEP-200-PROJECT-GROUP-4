@@ -101,20 +101,23 @@ export const UploadFromWebcam = ({ onPhotoUpload, loading }) => {
       message.error("You have already saved two face photos.");
       return;
     }
-
+  
     await captureAndDetectFace();
-
+  
     if (fullDesc.length > 0) {
       const screenshot = webcamRef.current.getScreenshot();
       const compressedImage = await compressImage(screenshot);
       const blobImage = await base64ToBlob(compressedImage);
-
+  
       if (blobImage) {
         setPreviewImages((prev) => [...prev, blobImage]);
         setPhotoCount((prev) => prev + 1);
-
+  
         message.success(`Face photo ${photoCount + 1} saved.`);
-
+  
+        // Log face descriptors being saved
+        console.log("Descriptors being saved:", faceDescriptors);
+  
         // Check if we have now reached 2 photos
         if (photoCount + 1 === 2) {
           message.success("Two face photos captured. You can now submit the form.");
@@ -126,12 +129,15 @@ export const UploadFromWebcam = ({ onPhotoUpload, loading }) => {
       message.error("No face detected. Please capture a valid photo.");
     }
   };
-
+  
   const handleSubmit = async () => {
     console.log("Photo count:", photoCount);
     console.log("Preview images length:", previewImages.length);
     console.log("Face descriptors length:", faceDescriptors.length);
-
+  
+    // Log the descriptors before submission
+    console.log("Descriptors being sent to FaceRegistration:", faceDescriptors);
+  
     try {
       if (photoCount === 2 && previewImages.length === 2 && faceDescriptors.length === 4) {
         const formData = new FormData();
@@ -139,19 +145,19 @@ export const UploadFromWebcam = ({ onPhotoUpload, loading }) => {
         formData.append('descriptor2', faceDescriptors[1]);
         formData.append('image1', previewImages[0], 'image1.jpg');
         formData.append('image2', previewImages[1], 'image2.jpg');
-
-        console.log('FormData being submitted:', {
+  
+        console.log('FormData being submitted to FaceRegistration:', {
           descriptor1: formData.get('descriptor1'),
           image1: formData.get('image1'),
           descriptor2: formData.get('descriptor2'),
           image2: formData.get('image2'),
         });
-
+  
         onPhotoUpload({
           previewImages: [formData.get('image1'), formData.get('image2')],
           faceDescriptors: [formData.get('descriptor1'), formData.get('descriptor2')],
         });
-
+  
         message.success("Face photos and descriptors submitted successfully.");
         setPhotoCount(0);
         setFaceDescriptors([]);
@@ -164,6 +170,7 @@ export const UploadFromWebcam = ({ onPhotoUpload, loading }) => {
       message.error("An error occurred during submission. Please try again.");
     }
   };
+  
 
   const startCaptureInterval = () => {
     const intervalId = setInterval(() => {

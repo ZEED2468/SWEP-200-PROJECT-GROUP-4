@@ -55,7 +55,7 @@ function FaceRegistration() {
 
   // This function will be passed to the Upload components to receive photo data
   const handlePhotoUpload = (data) => {
-    console.log("Photo data received:", data);
+    console.log("Photo data received from UploadFromWebcam:", data); // Log the data received
     setPhotoData(data); // Save the photo data (previewImages and faceDescriptors) to state
   };
 
@@ -65,6 +65,9 @@ function FaceRegistration() {
         message.error("Please capture or upload a photo before submitting.");
         return;
       }
+
+      // Log the data before submission
+      console.log("Photo data being sent to backend:", photoData);
 
       const formData = new FormData();
       
@@ -82,6 +85,20 @@ function FaceRegistration() {
       formData.append('descriptor2', JSON.stringify(photoData.faceDescriptors[1]));
       formData.append('image1', photoData.previewImages[0]); // First image file
       formData.append('image2', photoData.previewImages[1]); // Second image file
+
+      console.log('FormData being submitted to backend:', {
+        name: formData.get('name'),
+        matricNo: formData.get('matricNo'),
+        department: formData.get('department'),
+        faculty: formData.get('faculty'),
+        currentPart: formData.get('currentPart'),
+        semester: formData.get('semester'),
+        courses: formData.get('courses'),
+        descriptor1: formData.get('descriptor1'),
+        descriptor2: formData.get('descriptor2'),
+        image1: formData.get('image1'),
+        image2: formData.get('image2'),
+      });
 
       setLoading(true);
 
@@ -296,6 +313,7 @@ function FaceRegistration() {
 }
 
 export default FaceRegistration;
+
 
 
 
