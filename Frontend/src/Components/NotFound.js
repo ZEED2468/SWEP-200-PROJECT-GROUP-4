@@ -1,12 +1,21 @@
 import logo from "../img/Group 6.png";
+import spiral from "../img/bgi.png"
 import hlogo from "../img/Group 7.png";
 import cancel from "../img/cancel.png";
 
 
 function NotFound() {
+
+  const background = {
+    backgroundImage: `url(${spiral})`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat"
+  }
+
    return (
     <div className="flex h-screen">
-      <div className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8">
+      <div className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8"
+      style={background}>
         <img src={logo} alt="" className="h-12 mb-8" />
         <h1 className="text-2xl font-bold">Face Edu</h1>
         {/* <p className="mt-4">@SWEP200 GROUP 4</p> */}

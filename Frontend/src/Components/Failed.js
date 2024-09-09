@@ -1,14 +1,40 @@
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { NavLinks } from '.';
 import logo from "../img/Group 6.png";
+import spiral from "../img/bgi.png";
 import hlogo from "../img/Group 7.png";
 import mark from "../img/question_mark.png";
-import { NavLinks } from '.';
-import { Link } from 'react-router-dom';
+
+
 
 
 function FailedPage() {
+
+  const background = {
+    backgroundImage: `url(${spiral})`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat"
+  }
+
+  const [matricNumber, setMatricNumber] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    const isMatricNumberFound = true; 
+
+    if (isMatricNumberFound) {
+      navigate('/result');
+    } else {
+      navigate('/notfound');
+    }
+  };
+
+
   return (
     <div className="flex h-screen">
-      <div className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8">
+      <div className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8"
+      style={background}>
         <img src={logo} alt="" className="h-12 mb-8" />
         <h1 className="text-2xl font-bold">Face Edu</h1>
         {/* <p className="mt-4">@SWEP200 GROUP 4</p> */}
@@ -30,7 +56,7 @@ function FailedPage() {
             </ul>
           <div className="flex flex-row items-center">
             <img
-              src="" // image placeholder
+              src="" 
               alt="Profile"
               className="mr-2 w-8 h-8 border-2 border-cyan-400 rounded-full object-cover"
             />
@@ -46,14 +72,20 @@ function FailedPage() {
             <h1 className="mt-8 text-2xl font-bold">Verification Failed</h1>
             <p className="mt-2 text-lg pl-6">Enter Matric Number</p>
             <div className="mt-4">
-              <Link to = '/notfound'><input
+              {/* <Link to = '/notfound'> */}
+              <input
                 type="text"
                 placeholder="Matric Number"
+                value={matricNumber}
+                onChange={(e) => setMatricNumber(e.target.value)}
                 className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-              /></Link>
-              <Link to = '/confirmedpage'><button className="ml-4 px-6 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors">
+              />
+              {/* </Link> */}
+              {/* <Link to = '/confirmedpage'> */}
+              <button onClick={handleSubmit} className="ml-4 px-6 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors">
                 Submit
-              </button></Link>
+              </button>
+              {/* </Link> */}
             </div>
             </div>
           </section>

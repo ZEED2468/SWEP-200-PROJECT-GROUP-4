@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../img/Group 7.png";
 import back from "../img/assets/Group 4.png";
 import topLogo from "../img/Group 6.png";
 import image from "../img/Human 4.png";
 import { NavLinks } from ".";
 import { IoMdCopy } from "react-icons/io";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 const background = {
   backgroundImage: `url(${back})`,
   backgroundSize: "contain",
@@ -15,6 +15,53 @@ const background = {
 };
 
 const Admin = () => {
+  const { user, dispatch } = useAuthContext();
+  const tokenID = user?.user?.token_id || user?.userdetails.createToken._id;
+  const supervisor = user?.supervisor;
+  const navigate = useNavigate();
+  // if (!tokenID) {
+  //   navigate("/login");
+  // }
+  const logOut = async () => {
+    const response = await fetch("/api/v1/auth/logout", {
+      method: "GET",
+    });
+    if (!response.ok) {
+      console.log("Uable to logout");
+    }
+    localStorage.removeItem("user");
+    dispatch({ type: "LOGOUT" });
+  };
+  const [token, setToken] = useState(null);
+  //const [text, setText] = useState("");
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(token?.token.token);
+      alert("Copied Successfully");
+      // setCopySuccess("Text copied to clipboard!");
+    } catch (error) {
+      //setCopySuccess("Failed to copy text.");
+      console.log(error);
+    }
+  };
+
+  const fetchToken = async () => {
+    const response = await fetch(`/api/v1/admin/token/${tokenID}`, {
+      method: "GET",
+    });
+    const json = await response.json();
+    if (response.ok) {
+      console.log(json);
+      setToken(json);
+    }
+  };
+  useEffect(() => {
+    fetchToken();
+  }, [user]);
+  console.log(tokenID);
+  console.log(token?.token.token);
+  console.log(supervisor);
+
   return (
     <div className="flex flex-col">
       <header className="flex flex-row m-auto w-full border border-b-[#3FF3FF]">
@@ -42,13 +89,14 @@ const Admin = () => {
             ))}
           </ul>
           <img src={image} alt="ellipse" className="relative left-[270px]" />
-          <Link
-            to="/login"
-            target="_blank"
-            className=" border-[#3FF3FF]
-      border-2 p-2 rounded-2xl ml-[300px] pl-4 pr-4 hover:bg-[#3FF3FF]"
-          >
-            <button type="button" className="font-bold">
+
+          <Link to="/login">
+            <button
+              className=" border-[#3FF3FF]
+      border-2 p-2 rounded-2xl font-bold ml-[300px] pl-4 pr-4 hover:bg-[#3FF3FF]"
+              type="button"
+              onClick={logOut}
+            >
               Log out
             </button>
           </Link>
@@ -142,16 +190,26 @@ const Admin = () => {
             <br />
             regardless of whether they have their ID card on hand.
           </p>
-          <div className="flex flex-row m-auto gap-3">
-            <p className="text-xl font-semibold">Token</p>
-            <input
-              type="text"
-              name=""
-              id=""
-              className="border-2 border-black text-center"
-            />
-            <IoMdCopy className="relative right-2 text-3xl cursor-pointer hover:fill-black" />
-          </div>
+
+          {!supervisor ? (
+            <div className="flex flex-row m-auto gap-3">
+              <p className="text-xl font-semibold">Token: </p>
+              <input
+                type="text"
+                name="token"
+                id="token"
+                width={"200px"}
+                value={token?.token.token}
+                readOnly
+                className="font-bold max-w-52 border-gray-300 text-2xl text-cyan-500 text-center hover:bottom-0"
+              />
+
+              <IoMdCopy
+                onClick={handleCopy}
+                className="relative right-2 text-3xl cursor-pointer hover:fill-black"
+              />
+            </div>
+          ) : null}
         </div>
       </section>
     </div>

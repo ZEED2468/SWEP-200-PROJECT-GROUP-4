@@ -5,6 +5,7 @@ import back from "../img/assets/Group 4.png";
 import topLogo from "../img/Group 6.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const background = {
   backgroundImage: `url(${back})`,
@@ -21,6 +22,8 @@ const Login = () => {
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { dispatch, user } = useAuthContext();
+  const supervisor = user?.supervisor;
 
   const login = async (email, password) => {
     setIsLoading(true);
@@ -38,7 +41,14 @@ const Login = () => {
       setIsLoading(false);
     }
     if (response.ok) {
-      navigate("/verificationpage");
+      localStorage.setItem("user", JSON.stringify(json));
+      dispatch({ type: "LOGIN", payload: json });
+      if (!supervisor) {
+        navigate("/admin");
+      } else {
+        navigate("/verificationpage");
+      }
+
       setIsLoading(false);
     }
   };
@@ -191,6 +201,13 @@ const Login = () => {
           >
             {isLoading ? <h2>login in....</h2> : <h2>LOGIN</h2>}
           </button>
+
+          <div className="mt-2 font-bold text-center">
+            <span className="text-white">Don't have an account ? | </span>
+            <span className="text-blue-400 cursor-pointer hover:text-[#3FF3FF]">
+              <Link to="/register">Register</Link>
+            </span>
+          </div>
 
           <div>
             {error && (

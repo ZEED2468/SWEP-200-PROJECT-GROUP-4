@@ -1,0 +1,540 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { Button, Input, Form, Modal, Select, Card, message } from "antd";
+import { UploadFromDisk } from "./faceUpload/UploadFromDisk";
+import { UploadFromWebcam } from "./faceUpload/UploadFromWebcam";
+import {
+  isFaceDetectionModelLoaded,
+  isFacialLandmarkDetectionModelLoaded,
+  isFeatureExtractionModelLoaded,
+  loadModels,
+} from "./faceUtil";
+import ModelLoadStatus from "./utils/ModelLoadStatus";
+import ModelLoading from "./utils/ModelLoading";
+import logo from "../img/Group 6.png";
+import hlogo from "../img/Group 7.png";
+import spiral from "../img/bgi.png";
+import { NavLinks } from ".";
+import { useMutation } from "@apollo/client";
+
+const { Option } = Select;
+
+const DEFAULT_UPLOAD_OPTION = "From Webcam";
+const UPLOAD_OPTION = ["From Webcam", "From Disk"];
+
+function FaceRegistration() {
+  const [form] = Form.useForm();
+  const [selectedUploadOption, setSelectedUploadOption] = useState(DEFAULT_UPLOAD_OPTION);
+  const [isAllModelLoaded, setIsAllModelLoaded] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("");
+  const [loadingMessageError, setLoadingMessageError] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [courses, setCourses] = useState([]);
+  const [currentCourse, setCurrentCourse] = useState("");
+  const [photoData, setPhotoData] = useState(null); // State to store the photo data (images and face descriptors)
+
+  const navigate = useNavigate();
+
+  const handleSelectUploadOption = (value) => {
+    setSelectedUploadOption(value);
+  };
+
+  // Load face detection models on page load
+  useEffect(() => {
+    async function loadingModels() {
+      await loadModels(setLoadingMessage, setLoadingMessageError);
+      setIsAllModelLoaded(true);
+    }
+    if (isFaceDetectionModelLoaded() && isFacialLandmarkDetectionModelLoaded() && isFeatureExtractionModelLoaded()) {
+      setIsAllModelLoaded(true);
+      return;
+    }
+    loadingModels();
+  }, [isAllModelLoaded]);
+
+  // This function will be passed to the Upload components to receive photo data
+  const handlePhotoUpload = (data) => {
+    console.log("Photo data received:", data);
+    setPhotoData(data); // Save the photo data (previewImages and faceDescriptors) to state
+  };
+
+  const handleSubmit = async () => {
+    form.validateFields().then(async (values) => {
+      if (!photoData) {
+        message.error("Please capture or upload a photo before submitting.");
+        return;
+      }
+
+      const formData = new FormData();
+      
+      // Append form data
+      formData.append('name', values.name);
+      formData.append('matricNo', values.matricNo);
+      formData.append('department', values.department);
+      formData.append('faculty', values.faculty);
+      formData.append('currentPart', values.currentPart);
+      formData.append('semester', values.semester);
+      formData.append('courses', JSON.stringify(courses)); // Courses as array
+
+      // Append face descriptors and images
+      formData.append('descriptor1', JSON.stringify(photoData.faceDescriptors[0]));
+      formData.append('descriptor2', JSON.stringify(photoData.faceDescriptors[1]));
+      formData.append('image1', photoData.previewImages[0]); // First image file
+      formData.append('image2', photoData.previewImages[1]); // Second image file
+
+      setLoading(true);
+
+      try {
+        const response = await fetch('/api/v1/students/register', {
+          method: 'POST',
+          body: formData,  // Pass FormData to the backend
+        });
+
+        if (response.ok) {
+          message.success("Form and photo submitted successfully.");
+          setLoading(false);
+          navigate("/confirmedpage");  // Redirect after success
+        } else {
+          message.error("Submission failed. Please try again.");
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Submission error:", error);
+        message.error("An error occurred during submission. Please try again.");
+        setLoading(false);
+      }
+    });
+  };
+
+  const addCourse = () => {
+    if (currentCourse.trim() !== "") {
+      setCourses([...courses, currentCourse]);
+      setCurrentCourse("");
+    }
+  };
+
+  return (
+    <div className="flex h-screen">
+      <div
+        className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8"
+        style={{ backgroundImage: `url(${spiral})`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}
+      >
+        <img src={logo} alt="Logo" className="h-12 mb-8" />
+        <h1 className="text-2xl font-bold">Face Edu</h1>
+      </div>
+
+      <div className="flex-1 flex flex-col items-center justify-center">
+        <nav className="absolute top-0 left-0 w-full flex justify-between items-center p-3 bg-white shadow border-b-2 border-cyan-400">
+          <Link to="/admin">
+            <div className="flex">
+              <img src={hlogo} alt="Logo" className="h-6 mt-1" />
+              <h1 className="text-2xl font-bold ml-3">Face Edu</h1>
+            </div>
+          </Link>
+
+          <ul className="flex flex-row ml-[100px] gap-36">
+            {NavLinks.map((lists) => (
+              <li key={lists.text} className="text-black text-center hover:text-cyan-400 text-lg font-semibold mt-2">
+                <Link to={lists.destination} className="cursor-pointer mr-7">
+                  {lists.text}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex flex-row items-center">
+            <img
+              src="placeholder" // image placeholder
+              alt="Profile"
+              className="mr-2 w-8 h-8 border-2 border-cyan-400 rounded-full object-cover"
+            />
+            <Link to="/login">
+              <button className="px-4 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors">
+                Log out
+              </button>
+            </Link>
+          </div>
+        </nav>
+
+        {/* Main Content - Webcam, Form, Model Load Sections */}
+        <div className="flex-1 flex flex-row items-start justify-center mt-[5rem]">
+          {/* Webcam Section (Largest) */}
+          <div className="w-2/4 p-4">
+            <section className="flex-1 flex flex-col items-center justify-center">
+              {/* Upload from Webcam or Disk */}
+              {selectedUploadOption === "From Disk" ? (
+                <UploadFromDisk
+                  onPhotoUpload={handlePhotoUpload} // Correct prop name
+                  loading={loading}
+                />
+              ) : (
+                <UploadFromWebcam
+                  onPhotoUpload={handlePhotoUpload} // Correct prop name
+                  loading={loading}
+                />
+              )}
+            </section>
+          </div>
+
+          {/* Form Section (Medium) */}
+          <div className="w-1/4 p-4">
+            <Form form={form} layout="vertical" className="mt-10 w-full">
+              <Form.Item label="Name" name="name" rules={[{ required: true, message: "Please enter your name" }]}>
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                label="Matric No"
+                name="matricNo"
+                rules={[{ required: true, message: "Please enter your matric number" }]}
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                label="Department"
+                name="department"
+                rules={[{ required: true, message: "Please enter your department" }]}
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                label="Faculty"
+                name="faculty"
+                rules={[{ required: true, message: "Please enter your faculty" }]}
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                label="Current Part"
+                name="currentPart"
+                rules={[{ required: true, message: "Please enter your current part" }]}
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                label="Semester"
+                name="semester"
+                rules={[{ required: true, message: "Please enter your semester" }]}
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Courses">
+                <div className="flex">
+                  <Input value={currentCourse} onChange={(e) => setCurrentCourse(e.target.value)} />
+                  <Button onClick={addCourse} className="ml-2">
+                    Add
+                  </Button>
+                </div>
+                <div className="mt-3">
+                  {courses.map((course, index) => (
+                    <div key={index}>{course}</div>
+                  ))}
+                </div>
+              </Form.Item>
+
+              <Button type="primary" onClick={() => setIsModalVisible(true)}>
+                Submit
+              </Button>
+            </Form>
+          </div>
+
+          {/* Model Load & Upload Option Section (Smallest) */}
+          <div className="w-1/4 p-4">
+            <section className="flex-1 flex flex-col items-center justify-center">
+              {/* Upload Option */}
+              <Form layout="vertical" className="mt-6 w-full">
+                <Form.Item label="Upload Option">
+                  <Select defaultValue={DEFAULT_UPLOAD_OPTION} onChange={handleSelectUploadOption}>
+                    {UPLOAD_OPTION.map((op) => (
+                      <Option key={op} value={op}>
+                        {op}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </Form>
+
+              {/* Model Load Section */}
+              <div className="mt-6">
+                <Card title="Model Load">
+                  <ModelLoadStatus errorMessage={loadingMessageError} />
+                </Card>
+
+                {!isAllModelLoaded ? (
+                  <ModelLoading loadingMessage={loadingMessage} />
+                ) : loadingMessageError ? (
+                  <div className="error">{loadingMessageError}</div>
+                ) : (
+                  <div>
+                    {/* Additional actions can be added here if needed */}
+                  </div>
+                )}
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      {/* Modal for Loading */}
+      <Modal
+        open={isModalVisible} // Changed 'visible' to 'open'
+        title="Submitting Photo"
+        onOk={handleSubmit}
+        onCancel={() => setIsModalVisible(false)}
+        confirmLoading={loading}
+      >
+        <p>Are you sure you want to submit this photo and details?</p>
+      </Modal>
+    </div>
+  );
+}
+
+export default FaceRegistration;
+
+
+
+
+// import { useNavigate, Link } from "react-router-dom";
+// import { Button, Input, Form, Modal, Select, Card, message } from "antd";
+// import { UploadFromDisk } from "./faceUpload/UploadFromDisk";
+// import { UploadFromWebcam } from "./faceUpload/UploadFromWebcam";
+// import {
+//   isFaceDetectionModelLoaded,
+//   isFacialLandmarkDetectionModelLoaded,
+//   isFeatureExtractionModelLoaded,
+//   loadModels,
+// } from "./faceUtil";
+// import ModelLoadStatus from "./utils/ModelLoadStatus";
+// import ModelLoading from "./utils/ModelLoading";
+// import { ADD_FACE_PHOTO_MUTATION } from "./graphql/mutation/index";
+// import { CheckError } from "./utils/ErrorHandling";
+// import logo from "../img/Group 6.png";
+// import hlogo from "../img/Group 7.png";
+// import spiral from "../img/bgi.png";
+// import { NavLinks } from ".";
+// import { useMutation } from "@apollo/client";
+
+// const { Option } = Select;
+
+// const DEFAULT_UPLOAD_OPTION = "From Webcam";
+// const UPLOAD_OPTION = ["From Webcam", "From Disk"];
+
+// function FaceRegistration({ galleryRefetch, countRefetch }) {
+//   const [form] = Form.useForm();
+//   const [selectedUploadOption, setSelectedUploadOption] = useState(DEFAULT_UPLOAD_OPTION);
+//   const [isAllModelLoaded, setIsAllModelLoaded] = useState(false);
+//   const [loadingMessage, setLoadingMessage] = useState("");
+//   const [loadingMessageError, setLoadingMessageError] = useState("");
+//   const [isModalVisible, setIsModalVisible] = useState(false);
+//   const [loading, setLoading] = useState(false);
+//   const [courses, setCourses] = useState([]);
+//   const [photoData, setPhotoData] = useState(null);
+//   const [currentCourse, setCurrentCourse] = useState("");
+//   const [descriptors, setDescriptors] = useState([]); // Store face descriptors
+//   const navigate = useNavigate();
+
+//   // Mutation to add face photo
+//   const [addFacePhotoCallback] = useMutation(ADD_FACE_PHOTO_MUTATION, {
+//     onError(err) {
+//       CheckError(err);
+//     },
+//   });
+
+//   const handleSelectUploadOption = (value) => {
+//     setSelectedUploadOption(value);
+//   };
+
+//   useEffect(() => {
+//     async function loadingModels() {
+//       await loadModels(setLoadingMessage, setLoadingMessageError);
+//       setIsAllModelLoaded(true);
+//     }
+//     if (isFaceDetectionModelLoaded() && isFacialLandmarkDetectionModelLoaded() && isFeatureExtractionModelLoaded()) {
+//       setIsAllModelLoaded(true);
+//     } else {
+//       loadingModels();
+//     }
+//   }, [isAllModelLoaded]);
+
+//   const handlePhotoUpload = (data) => {
+//     setPhotoData(data); 
+//     if (data.faceDescriptors.length === 2) {
+//       setDescriptors(data.faceDescriptors.map(desc => desc.toString()));
+//     }
+//   };
+
+//   const handleSubmit = () => {
+//     form
+//       .validateFields()
+//       .then((values) => {
+//         if (!descriptors || descriptors.length !== 2) {
+//           message.error("Please upload two face photos.");
+//           return;
+//         }
+
+//         setLoading(true);
+
+//         addFacePhotoCallback({
+//           variables: {
+//             input: {
+//               ...values,
+//               faceDescriptor1: descriptors[0], // First face descriptor
+//               faceDescriptor2: descriptors[1], // Second face descriptor
+//             },
+//           },
+//         })
+//           .then(() => {
+//             message.success("Face photo and details submitted successfully!");
+//             navigate("/confirmedpage");
+//           })
+//           .finally(() => setLoading(false));
+//       })
+//       .catch(() => {
+//         message.error("Validation failed. Please check the form fields.");
+//       });
+//   };
+
+//   return (
+//     <div className="h-screen flex">
+//       {/* Left Section - Hidden on small screens, takes 25% on larger screens */}
+//       <div
+//         className="bg-black text-white hidden lg:flex lg:w-1/4 flex-col justify-center items-center p-6 h-screen"
+//         style={{ backgroundImage: `url(${spiral})`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}
+//       >
+//         <img src={logo} alt="Logo" className="h-20 mb-4" />
+//         <h1 className="text-2xl font-bold">Face Edu</h1>
+//       </div>
+
+//       {/* Right Section - Main Content */}
+//       <div className="flex-1 flex flex-col lg:flex-row items-center justify-center lg:space-x-12 px-4 py-6 lg:py-12 overflow-y-auto">
+//         {/* Navigation Bar */}
+//         <nav className="absolute top-0 left-0 w-full flex justify-between items-center p-3 bg-white shadow border-b-2 border-cyan-400">
+//           <Link to="/admin">
+//             <div className="flex">
+//               <img src={hlogo} alt="Logo" className="h-6 mt-1" />
+//               <h1 className="text-2xl font-bold ml-3">Face Edu</h1>
+//             </div>
+//           </Link>
+
+//           <ul className="flex flex-row ml-[100px] gap-36">
+//             {NavLinks.map((lists) => (
+//               <li key={lists.text} className="text-black text-center hover:text-cyan-400 text-lg font-semibold mt-2">
+//                 <Link to={lists.destination} className="cursor-pointer mr-7">
+//                   {lists.text}
+//                 </Link>
+//               </li>
+//             ))}
+//           </ul>
+
+//           <div className="flex flex-row items-center">
+//             <img
+//               src="placeholder" // image placeholder
+//               alt="Profile"
+//               className="mr-2 w-8 h-8 border-2 border-cyan-400 rounded-full object-cover"
+//             />
+//             <Link to="/login">
+//               <button className="px-4 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors">
+//                 Log out
+//               </button>
+//             </Link>
+//           </div>
+//         </nav>
+
+//         {/* Left Side - Webcam/Upload */}
+//         <div className="flex-1 lg:max-w-lg">
+//           <Card title="Model Load" className="w-full">
+//             <ModelLoadStatus errorMessage={loadingMessageError} />
+//           </Card>
+//           {!isAllModelLoaded ? (
+//             <ModelLoading loadingMessage={loadingMessage} />
+//           ) : (
+//             <div>
+//               {/* Upload from Webcam or Disk */}
+//               {selectedUploadOption === "From Disk" ? (
+//                 <UploadFromDisk
+//                   onPhotoUpload={handlePhotoUpload}
+//                   loading={loading}
+//                 />
+//               ) : (
+//                 <UploadFromWebcam
+//                   onPhotoUpload={handlePhotoUpload}
+//                   loading={loading}
+//                 />
+//               )}
+//             </div>
+//           )}
+//         </div>
+
+//         {/* Right Side - Form Section */}
+//         <div className="flex-1 lg:max-w-lg">
+//           <Form form={form} layout="vertical" className="mt-10 lg:mt-0 w-full">
+//             <Form.Item label="Upload Option">
+//               <Select defaultValue={DEFAULT_UPLOAD_OPTION} onChange={handleSelectUploadOption}>
+//                 {UPLOAD_OPTION.map((op) => (
+//                   <Option key={op} value={op}>
+//                     {op}
+//                   </Option>
+//                 ))}
+//               </Select>
+//             </Form.Item>
+
+//             {/* Form Fields */}
+//             <Form.Item label="Name" name="name" rules={[{ required: true, message: "Please enter your name" }]}>
+//               <Input />
+//             </Form.Item>
+//             <Form.Item label="Matric No" name="matricNo" rules={[{ required: true, message: "Please enter your matric number" }]}>
+//               <Input />
+//             </Form.Item>
+//             <Form.Item label="Department" name="department" rules={[{ required: true, message: "Please enter your department" }]}>
+//               <Input />
+//             </Form.Item>
+//             <Form.Item label="Faculty" name="faculty" rules={[{ required: true, message: "Please enter your faculty" }]}>
+//               <Input />
+//             </Form.Item>
+//             <Form.Item label="Current Part" name="currentPart" rules={[{ required: true, message: "Please enter your current part" }]}>
+//               <Input />
+//             </Form.Item>
+//             <Form.Item label="Semester" name="semester" rules={[{ required: true, message: "Please enter your semester" }]}>
+//               <Input />
+//             </Form.Item>
+
+//             <Form.Item label="Courses">
+//               <div className="flex">
+//                 <Input value={currentCourse} onChange={(e) => setCurrentCourse(e.target.value)} />
+//                 <Button onClick={() => setCourses([...courses, currentCourse])} className="ml-2">Add</Button>
+//               </div>
+//               <div className="mt-3">
+//                 {courses.map((course, index) => (
+//                   <div key={index}>{course}</div>
+//                 ))}
+//               </div>
+//             </Form.Item>
+
+//             <Button type="primary" onClick={() => setIsModalVisible(true)}>
+//               Submit
+//             </Button>
+//           </Form>
+//         </div>
+//       </div>
+
+//       {/* Modal for Confirming Submission */}
+//       <Modal
+//         open={isModalVisible}
+//         title="Submitting Photo"
+//         onOk={handleSubmit}
+//         onCancel={() => setIsModalVisible(false)}
+//         confirmLoading={loading}
+//       >
+//         <p>Are you sure you want to submit this photo and details?</p>
+//       </Modal>
+//     </div>
+//   );
+// }
+
+// export default FaceRegistration;

@@ -4,7 +4,7 @@ import face from "../img/Ellipse 3.svg";
 import back from "../img/assets/Group 4.png";
 import topLogo from "../img/Group 6.png";
 import { Link, useNavigate } from "react-router-dom";
-
+import { useAuthContext } from "../hooks/useAuthContext";
 const background = {
   backgroundImage: `url(${back})`,
   backgroundSize: "contain",
@@ -18,6 +18,7 @@ const TokenLogin = () => {
   const [token, setToken] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const [error, setError] = useState("");
+  const { dispatch } = useAuthContext();
   const login = async (name, token) => {
     setIsLoading(true);
     const response = await fetch("/api/v1/auth/login", {
@@ -34,6 +35,10 @@ const TokenLogin = () => {
       setIsLoading(false);
     }
     if (response.ok) {
+      localStorage.setItem("user", JSON.stringify(json));
+      dispatch({ type: "LOGIN", payload: json });
+
+      setIsLoading(false);
       navigate("/verificationpage");
       setIsLoading(false);
     }
