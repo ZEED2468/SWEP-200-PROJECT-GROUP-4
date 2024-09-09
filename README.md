@@ -61,7 +61,7 @@
 - After resolving conflicts or merging, push the updated branch back to GitHub:
 ```git push```
 
-- Final Notes:
+**Final Notes:**
 - Upstream Tracking: By using --set-upstream during the first push, your local branch is linked to the remote branch, simplifying future pushes and pulls with just git push or ```git pull```
 - Pull Requests: Ensure you review your pull request before merging and address any requested changes or feedback from reviewers.
 - This process ensures a smooth workflow for collaborative development, allowing you to maintain code quality and consistency across the team.
@@ -146,4 +146,3 @@
 - **Pull Requests**: Ensure you review your pull request before merging and address any requested changes or feedback from reviewers.
 
 This process ensures a smooth workflow for collaborative development, allowing you to maintain code quality and consistency across the team.
->>>>>>> e8adeeeb1d748a9a62b0bb6f8479671a9ee5e5ef
