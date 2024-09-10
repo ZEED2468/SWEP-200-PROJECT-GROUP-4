@@ -115,7 +115,7 @@ export const UploadFromDisk = ({ onPhotoUpload, loading }) => {
           </Upload>
         </Col>
         <Col>
-          <Button
+          <Button className="ml-4"
             type="primary"
             loading={loading}
             disabled={fileList.length === 0 || faceDescriptors.length !== fileList.length}
