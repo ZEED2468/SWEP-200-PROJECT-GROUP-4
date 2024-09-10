@@ -13,6 +13,8 @@ import NotFound from "./Components/NotFound.js";
 import FaceRegistration from "./Components/faceRegistration.js";
 import { useAuthContext } from "./hooks/useAuthContext.js";
 import AdminUser from "./Components/AdminUser.js";
+import ErrorPage from './Components/errorPage.js';
+
 
 function App() {
   const { user } = useAuthContext();
@@ -43,6 +45,7 @@ function App() {
             <Route path="/result" element={<Result />} />
             <Route path="/notfound" element={<NotFound />} />
             <Route path="/faceregistration" element={<FaceRegistration />} />
+            <Route path="/error" element={<ErrorPage />} />
           </Routes>
         </BrowserRouter>
       </div>

@@ -193,19 +193,19 @@ const Verification = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          descriptor1: faceDescriptors[0], // These are strings
-          descriptor2: faceDescriptors[1], // These are strings
+          descriptor1: faceDescriptors[0],
+          descriptor2: faceDescriptors[1],
         }),
       });
 
       const result = await response.json();
-      console.log("Backend response:", result); // Log backend response
+      console.log("Backend response:", result);
 
       if (result.success) {
         message.success("Face verified successfully!");
-        navigate("/result"); // Navigate to result page
+        navigate("/result", { state: { student: result.student } }); // Pass student data
       } else {
-        message.error(result.message || "Face verification failed."); // Use message from backend
+        message.error(result.message || "Face verification failed.");
         navigate("/failedpage");
       }
     } catch (error) {
@@ -213,10 +213,9 @@ const Verification = () => {
       message.error("An error occurred during face verification.");
     } finally {
       setLoading(false);
-      setIsModalVisible(false); // Hide the modal after verification
+      setIsModalVisible(false);
     }
   };
-
   const handleSaveDescriptors = (descriptors) => {
     console.log("Descriptors received from VerifyFromWebcam:", descriptors); // Log descriptors received from webcam
     setFaceDescriptors(descriptors);
