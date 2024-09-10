@@ -219,6 +219,8 @@ function FaceRegistration() {
           backgroundImage: `url(${spiral})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
+          height: "150vh",
+          width: "55vh",
         }}
       >
         <img src={logo} alt="Logo" className="h-12 mb-8" />
@@ -263,7 +265,7 @@ function FaceRegistration() {
         </nav>
 
         {/* Main Content - Webcam, Form, Model Load Sections */}
-        <div className="flex-1 flex flex-row items-start justify-center mt-[10rem]">
+        <div className="flex-1 flex flex-row items-start justify-center mt-[22rem]">
           {/* Webcam Section (Largest) */}
           <div className="w-2/4 p-4">
             <section className="flex-1 flex flex-col items-center justify-center">
@@ -284,7 +286,7 @@ function FaceRegistration() {
 
           {/* Form Section (Medium) */}
           <div className="w-1/4 p-4">
-            <Form form={form} layout="vertical" className="mt-10 w-full">
+            <Form form={form} layout="vertical" className="mt-6 w-full">
               <Form.Item
                 label="Name"
                 name="name"
