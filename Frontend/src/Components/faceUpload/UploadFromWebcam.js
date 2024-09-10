@@ -83,7 +83,7 @@ export const UploadFromWebcam = ({ onPhotoUpload, loading }) => {
         setFaceDescriptors((prev) => [...prev, descriptorString]);
 
         const ctx = canvasRef.current.getContext("2d");
-        drawFaceRect(fullDescription, ctx);
+drawFaceRect(fullDescription, ctx, videoWidth, videoHeight, camWidth, camHeight);
         setWaitText("");
 
         message.success(`Face detected. You can now save photo ${photoCount + 1}.`);

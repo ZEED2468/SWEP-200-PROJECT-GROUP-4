@@ -199,12 +199,13 @@ const Verification = () => {
       });
   
       const result = await response.json();
+      console.log("Backend response:", result); // Log backend response
   
       if (result.success) {
         message.success("Face verified successfully!");
-        navigate("/result-page");  // Navigate to result page
+        navigate("/result");  // Navigate to result page
       } else {
-        message.error("Face verification failed.");
+        message.error(result.message || "Face verification failed."); // Use message from backend
         navigate("/failedpage");
       }
     } catch (error) {
@@ -214,7 +215,8 @@ const Verification = () => {
       setLoading(false);
       setIsModalVisible(false); // Hide the modal after verification
     }
-  };  
+  };
+  
 
   const handleSaveDescriptors = (descriptors) => {
     console.log("Descriptors received from VerifyFromWebcam:", descriptors); // Log descriptors received from webcam
@@ -331,3 +333,5 @@ const Verification = () => {
 };
 
 export default Verification;
+
+
