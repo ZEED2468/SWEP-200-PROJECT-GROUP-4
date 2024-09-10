@@ -9,7 +9,7 @@ const background = {
   backgroundImage: `url(${back})`,
   backgroundSize: "cover",
   height: "70vh",
-  backgroundRepeat: "no-repeat"
+  backgroundRepeat: "no-repeat",
 };
 
 const TokenLogin = () => {
@@ -153,7 +153,7 @@ const TokenLogin = () => {
            text-black border rounded-2xl p-3 w-fit pl-16 pr-16
            m-auto font-bold text-lg hover:bg-[#3FF3FF]"
           >
-            {isLoading ? <h2>logining...</h2> : <h2>LOGIN</h2>}
+            {isLoading ? <h2>loggin in...</h2> : <h2>LOGIN</h2>}
           </button>
           <div>
             {error && (

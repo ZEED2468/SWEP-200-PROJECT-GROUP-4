@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+import React, { useState } from "react";
+import logo from "../img/Group 6.png";
+import spiral from "../img/bgi.png";
+import hlogo from "../img/Group 7.png";
+import { NavLinks } from ".";
+import { Link } from "react-router-dom";
+=======
 // import React, { useState } from 'react';
 // import logo from "../img/Group 6.png";
 // import spiral from "../img/bgi.png";
@@ -128,11 +136,39 @@ import logo from "../img/Group 6.png";
 import spiral from "../img/bgi.png";
 import hlogo from "../img/Group 7.png";
 import { NavLinks } from '.';
+>>>>>>> df49ae1a38c3fe329558e38352a161da525dbea9
 
 const Result = () => {
   const background = {
     backgroundImage: `url(${spiral})`,
     backgroundSize: "cover",
+<<<<<<< HEAD
+    backgroundRepeat: "no-repeat",
+  };
+
+  // Hardcoded data to make sure it's working.
+  const [studentData] = useState({
+    registrationNo: "CSC/2025/341",
+    name: "ANYONE ANYBODY NODODY",
+    faculty: "Technology",
+    department: "Computer Science and Engineering",
+    programme: "B.Sc. Computer Engineering",
+    semesterSession: "Rain, 2025/2026",
+    currentPart: "Part 2",
+    courses: [
+      "AEE202",
+      "CPE204",
+      "CSC202",
+      "CSC202",
+      "CVE202",
+      "EEE202",
+      "EEE292",
+      "MEE204",
+      "MEE206",
+      "MTH201",
+    ],
+  });
+=======
     backgroundRepeat: "no-repeat"
   };
 
@@ -148,29 +184,76 @@ const Result = () => {
   const currentPart = student.currentPart || 'N/A';
   const semester = student.semester || 'N/A';
   const image1 = student.image1 || 'default-profile.png'; // Use a default image if not available
+>>>>>>> df49ae1a38c3fe329558e38352a161da525dbea9
+
+  const logOut = async () => {
+    const response = await fetch("/api/v1/auth/logout", {
+      method: "GET",
+    });
+    if (!response.ok) {
+      console.log("Uable to logout");
+    }
+    localStorage.removeItem("user");
+    dispatch({ type: "LOGOUT" });
+  };
 
   return (
     <div className="flex h-screen">
+<<<<<<< HEAD
+      <div
+        className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8"
+        style={background}
+      >
+        <img src={logo} alt="Logo" className="h-12 mb-8" />
+        <h1 className="text-2xl font-bold">Face Edu</h1>
+      </div>
+
+=======
       <div className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8" style={background}>
         <img src={logo} alt="Logo" className="h-12 mb-8" />
         <h1 className="text-2xl font-bold">Face Edu</h1>
       </div>
       
+>>>>>>> df49ae1a38c3fe329558e38352a161da525dbea9
       <div className="flex-1 flex flex-col items-center justify-center bg-white">
         <nav className="absolute top-0 left-0 w-full flex justify-between items-center p-3 bg-white shadow border-b-2 border-cyan-400">
           <div className="flex">
-            <img src={hlogo} alt="Header Logo" className="h-6 mt-1"/>
+            <img src={hlogo} alt="Header Logo" className="h-6 mt-1" />
             <h1 className="text-2xl font-bold ml-3">Face Edu</h1>
           </div>
-          <ul className='flex flex-row ml-[100px] gap-36'>
+          <ul className="flex flex-row ml-[100px] gap-36">
             {NavLinks.map((lists) => (
+<<<<<<< HEAD
+              <li
+                key={lists}
+                className="text-black text-center hover:text-cyan-400 text-lg font-semibold mt-2"
+              >
+                <Link to={lists.destination} className="cursor-pointer mr-7">
+=======
               <li key={lists.destination} className='text-black text-center hover:text-cyan-400 text-lg font-semibold mt-2'>
                 <Link to={lists.destination} className='cursor-pointer mr-7'>
+>>>>>>> df49ae1a38c3fe329558e38352a161da525dbea9
                   {lists.text}
                 </Link>
               </li>
             ))}
           </ul>
+<<<<<<< HEAD
+          <div className="flex flex-row items-center">
+            <img
+              src="" // image placeholder
+              alt="Profile"
+              className="mr-2 w-8 h-8 border-2 border-cyan-400 rounded-full object-cover"
+            />
+            <button
+              onClick={logOut}
+              className="px-4 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors"
+            >
+              Log out
+            </button>
+          </div>
+=======
+>>>>>>> df49ae1a38c3fe329558e38352a161da525dbea9
         </nav>
 
         <div className="flex w-2/3 mt-20">
@@ -183,12 +266,22 @@ const Result = () => {
             <p className="font-semibold">Current Part:</p>
           </div>
           <div className="space-y-2 ml-20">
+<<<<<<< HEAD
+            <p className="font-semibold">{studentData.registrationNo}</p>
+            <p className="font-semibold">{studentData.name}</p>
+            <p>{studentData.faculty}</p>
+            <p>{studentData.department}</p>
+            <p>{studentData.programme}</p>
+            <p>{studentData.semesterSession}</p>
+            <p>{studentData.currentPart}</p>
+=======
             <p className="font-semibold">{student.matricNo || 'N/A'}</p>
             <p className="font-semibold">{student.name || 'N/A'}</p>
             <p>{student.faculty || 'N/A'}</p>
             <p>{student.department || 'N/A'}</p>
             <p>{semester}</p>
             <p>{currentPart}</p>
+>>>>>>> df49ae1a38c3fe329558e38352a161da525dbea9
           </div>
 
           <div className="flex flex-col items-center pl-20">
@@ -201,7 +294,9 @@ const Result = () => {
         </div>
 
         <div className="w-2/3 pt-10">
-          <h2 className="text-1xl text-center font-bold mb-4 mr-40">LIST OF REGISTERED COURSES</h2>
+          <h2 className="text-1xl text-center font-bold mb-4 mr-40">
+            LIST OF REGISTERED COURSES
+          </h2>
           <div className="grid grid-cols-4 gap-4">
             {student.courses?.length ? (
               student.courses.map((course, index) => (
@@ -218,3 +313,8 @@ const Result = () => {
 };
 
 export default Result;
+<<<<<<< HEAD
+
+// justify-between items-start
+=======
+>>>>>>> df49ae1a38c3fe329558e38352a161da525dbea9
