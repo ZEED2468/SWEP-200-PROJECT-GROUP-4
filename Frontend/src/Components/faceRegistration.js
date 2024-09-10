@@ -265,7 +265,7 @@ function FaceRegistration() {
         </nav>
 
         {/* Main Content - Webcam, Form, Model Load Sections */}
-        <div className="flex-1 flex flex-row items-start justify-center mt-[22rem]">
+        <div className="flex-1 flex flex-row items-start justify-center mt-[12rem]">
           {/* Webcam Section (Largest) */}
           <div className="w-2/4 p-4">
             <section className="flex-1 flex flex-col items-center justify-center">
