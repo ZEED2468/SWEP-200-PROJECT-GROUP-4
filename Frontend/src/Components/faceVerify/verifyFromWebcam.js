@@ -125,11 +125,9 @@ export const VerifyFromWebcam = ({ onPhotoUpload, loading, onEnableSubmit, onSav
       return;
     }
 
-    // Ensure that we capture the face and the description
     await captureAndDetectFace();
 
     if (fullDesc.length > 0) {
-      // Only proceed if a face is detected
       const screenshot = webcamRef.current.getScreenshot();
       const compressedImage = await compressImage(screenshot);
       const blobImage = await base64ToBlob(compressedImage);
@@ -138,29 +136,26 @@ export const VerifyFromWebcam = ({ onPhotoUpload, loading, onEnableSubmit, onSav
         setPreviewImages((prev) => [...prev, blobImage]);
         setPhotoCount((prev) => prev + 1);
 
-        // Directly access the descriptor as a string (if it's stored as an array, we join it into a string)
-        const newDescriptor = fullDesc[0].descriptor.join(",");  // Convert array of numbers into a comma-separated string
+        const newDescriptor = fullDesc[0].descriptor.join(",");
 
-        // Add the descriptor as a string to the state
         if (newDescriptor) {
           setFaceDescriptors((prev) => {
             if (prev.length >= 2) {
-              return [prev[1], newDescriptor];  // Replace the first descriptor with the new one
+              return [prev[1], newDescriptor];
             } else {
-              return [...prev, newDescriptor];  // Add new descriptor as a string
+              return [...prev, newDescriptor];
             }
           });
         }
 
         message.success(`Face photo ${photoCount + 1} saved.`);
 
-        // Check if two photos have been saved
         if (photoCount + 1 === 2) {
           message.success("Two face photos captured.");
-          setIsCaptureCompleted(true);  // Stop further captures
-          console.log("Face descriptors ready for verification:", faceDescriptors);  // Log the descriptors
-          onSaveDescriptors(faceDescriptors.slice(0, 2));  // Ensure only 2 descriptors are sent
-          onEnableSubmit(true);  // Enable the submit button
+          setIsCaptureCompleted(true);
+          console.log("Face descriptors ready for verification:", faceDescriptors);
+          onSaveDescriptors(faceDescriptors.slice(0, 2));
+          onEnableSubmit(true);
           message.info("Ready for verification.");
         }
       } else {
@@ -169,10 +164,15 @@ export const VerifyFromWebcam = ({ onPhotoUpload, loading, onEnableSubmit, onSav
     } else {
       message.error("No face detected. Please capture a valid photo.");
     }
-};
+  };
 
+  const startCaptureInterval = () => {
+    const intervalId = setInterval(() => {
+      captureAndDetectFace();
+    }, 8000);
 
-
+    return () => clearInterval(intervalId);
+  };
 
   useEffect(() => {
     if (!isCaptureCompleted) {
@@ -183,17 +183,8 @@ export const VerifyFromWebcam = ({ onPhotoUpload, loading, onEnableSubmit, onSav
     }
   }, [selectedWebcam, isCaptureCompleted]);
 
-  const startCaptureInterval = () => {
-    const intervalId = setInterval(() => {
-      captureAndDetectFace();
-    }, 8000);
-
-    return () => clearInterval(intervalId);
-  };
-
   return (
     <Card>
-      {/* Display model loading status */}
       {!isAllModelLoaded && <ModelLoading loadingMessage={loadingMessage} />}
       {isAllModelLoaded && (
         <div>
@@ -213,6 +204,8 @@ export const VerifyFromWebcam = ({ onPhotoUpload, loading, onEnableSubmit, onSav
             </Form.Item>
           </Form>
 
+          {waitText && <p>{waitText}</p>}
+
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <Webcam
               ref={webcamRef}
@@ -222,31 +215,43 @@ export const VerifyFromWebcam = ({ onPhotoUpload, loading, onEnableSubmit, onSav
               screenshotFormat="image/jpeg"
               videoConstraints={{ deviceId: selectedWebcam }}
             />
-            <canvas ref={canvasRef} style={{ position: "absolute", zIndex: 8, width: camWidth, height: camHeight }} />
+            <canvas
+              ref={canvasRef}
+              style={{
+                position: "absolute",
+                zIndex: 8,
+                width: camWidth,
+                height: camHeight,
+                pointerEvents: "none", // Prevents canvas from capturing mouse events
+              }}
+            />
           </div>
 
-          <Row style={{ marginTop: "20px" }}>
+          <Row style={{ marginTop: "20px", marginBottom: "30px", display: "flex", justifyContent: "center" }}>
             <Col span={24} style={{ textAlign: "center" }}>
-              <Button type="primary" onClick={handleSavePhoto} disabled={loading || isCaptureCompleted}>
+              <Button
+                type="primary"
+                onClick={handleSavePhoto}
+                disabled={loading || isCaptureCompleted}
+                style={{ position: "relative", zIndex: 10 }} // Ensures the button is above other elements
+              >
                 Save Photo
               </Button>
             </Col>
           </Row>
 
-          {waitText && <p>{waitText}</p>}
-
           {previewImages.length > 0 && (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10px" }}>
-              {previewImages.map((image, index) => (
-                <img
-                  key={index}
-                  src={URL.createObjectURL(image)}
-                  alt={`Captured ${index + 1}`}
-                  style={{ width: "200px", height: "200px", margin: "0 10px" }}
-                />
-              ))}
-            </div>
-          )}
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10px" }}>
+      {previewImages.map((image, index) => (
+        <img
+          key={index}
+          src={URL.createObjectURL(image)}
+          alt={`Captured ${index + 1}`}
+          style={{ width: "200px", height: "200px", margin: "0 10px" }}
+        />
+      ))}
+    </div>
+  )}
         </div>
       )}
     </Card>
@@ -254,4 +259,6 @@ export const VerifyFromWebcam = ({ onPhotoUpload, loading, onEnableSubmit, onSav
 };
 
 export default VerifyFromWebcam;
+
+
 

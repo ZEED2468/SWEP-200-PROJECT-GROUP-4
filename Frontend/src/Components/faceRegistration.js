@@ -66,62 +66,135 @@ function FaceRegistration() {
     console.log("Photo data received from UploadFromWebcam:", data); // Log the data received
     setPhotoData(data); // Save the photo data (previewImages and faceDescriptors) to state
   };
-  const handleSubmit = async () => {
+
+
+  // const handleSubmit = async () => {
+  //   form.validateFields().then(async (values) => {
+  //     if (!photoData) {
+  //       message.error("Please capture or upload a photo before submitting.");
+  //       return;
+  //     }
+
+  //     const formData = new FormData();
+
+  //     // Append form data
+  //     formData.append("name", values.name);
+  //     formData.append("matricNo", values.matricNo);
+  //     formData.append("department", values.department);
+  //     formData.append("faculty", values.faculty);
+  //     formData.append("currentPart", values.currentPart);
+  //     formData.append("semester", values.semester);
+  //     formData.append("courses", JSON.stringify(courses)); // Courses as JSON
+
+  //     // Append face descriptors and images
+  //     formData.append(
+  //       "descriptor1",
+  //       JSON.stringify(photoData.faceDescriptors[0])
+  //     );
+  //     formData.append(
+  //       "descriptor2",
+  //       JSON.stringify(photoData.faceDescriptors[1])
+  //     );
+
+  //     // Ensure these are file objects before appending
+  //     formData.append("image1", photoData.previewImages[0]);
+  //     formData.append("image2", photoData.previewImages[1]);
+
+  //     try {
+  //       const response = await fetch("/api/v1/students/register", {
+  //         method: "POST",
+  //         body: formData,
+  //       });
+
+  //       if (response.ok) {
+  //         message.success("Form and photo submitted successfully.");
+  //         console.log("Response from backend:", await response.json());
+  //         setLoading(false);
+  //         navigate("/verificationpage"); // Redirect after success
+  //       } else {
+  //         const errorResponse = await response.json();
+  //         console.error("Backend error response:", errorResponse);
+  //         message.error("Submission failed. Please try again.");
+  //         setLoading(false);
+  //       }
+  //     } catch (error) {
+  //       console.error("Submission error:", error);
+  //       message.error("An error occurred during submission. Please try again.");
+  //       setLoading(false);
+  //     }
+  //   });
+  // };
+
+   const handleSubmit = async () => {
     form.validateFields().then(async (values) => {
       if (!photoData) {
         message.error("Please capture or upload a photo before submitting.");
         return;
       }
 
+      // Log the data before submission
+      console.log("Photo data being sent to backend:", photoData);
+
       const formData = new FormData();
 
       // Append form data
-      formData.append("name", values.name);
-      formData.append("matricNo", values.matricNo);
-      formData.append("department", values.department);
-      formData.append("faculty", values.faculty);
-      formData.append("currentPart", values.currentPart);
-      formData.append("semester", values.semester);
-      formData.append("courses", JSON.stringify(courses)); // Courses as JSON
+      formData.append('name', values.name);
+      formData.append('matricNo', values.matricNo);
+      formData.append('department', values.department);
+      formData.append('faculty', values.faculty);
+      formData.append('currentPart', values.currentPart);
+      formData.append('semester', values.semester);
+      formData.append('courses', JSON.stringify(courses)); // Courses as array
 
       // Append face descriptors and images
-      formData.append(
-        "descriptor1",
-        JSON.stringify(photoData.faceDescriptors[0])
-      );
-      formData.append(
-        "descriptor2",
-        JSON.stringify(photoData.faceDescriptors[1])
-      );
+      formData.append('descriptor1', JSON.stringify(photoData.faceDescriptors[0]));
+      formData.append('descriptor2', JSON.stringify(photoData.faceDescriptors[1]));
+      formData.append('image1', photoData.previewImages[0]); // First image file
+      formData.append('image2', photoData.previewImages[1]); // Second image file
 
-      // Ensure these are file objects before appending
-      formData.append("image1", photoData.previewImages[0]);
-      formData.append("image2", photoData.previewImages[1]);
+      // Log the FormData being submitted to the backend
+      console.log('FormData being submitted to backend:', {
+        name: formData.get('name'),
+        matricNo: formData.get('matricNo'),
+        department: formData.get('department'),
+        faculty: formData.get('faculty'),
+        currentPart: formData.get('currentPart'),
+        semester: formData.get('semester'),
+        courses: formData.get('courses'),
+        descriptor1: formData.get('descriptor1'),
+        descriptor2: formData.get('descriptor2'),
+        image1: formData.get('image1'),
+        image2: formData.get('image2'),
+      });
+
+      setLoading(true);
 
       try {
-        const response = await fetch("/api/v1/students/register", {
-          method: "POST",
-          body: formData,
+        const response = await fetch('/api/v1/students/register', {
+          method: 'POST',
+          body: formData,  // Pass FormData to the backend
         });
 
         if (response.ok) {
           message.success("Form and photo submitted successfully.");
-          console.log("Response from backend:", await response.json());
+          console.log("Response from backend:", await response.json()); // Log successful response
           setLoading(false);
-          navigate("/verificationpagE"); // Redirect after success
+          navigate("/verificationpage");  // Redirect after success
         } else {
+          // Log any errors returned by the backend
           const errorResponse = await response.json();
           console.error("Backend error response:", errorResponse);
           message.error("Submission failed. Please try again.");
           setLoading(false);
         }
       } catch (error) {
-        console.error("Submission error:", error);
+        console.error("Submission error:", error); // Log the error in the catch block
         message.error("An error occurred during submission. Please try again.");
         setLoading(false);
       }
     });
   };
+
   const logOut = async () => {
     const response = await fetch("/api/v1/auth/logout", {
       method: "GET",
@@ -133,76 +206,6 @@ function FaceRegistration() {
     dispatch({ type: "LOGOUT" });
     navigate("/login");
   };
-
-  // const handleSubmit = async () => {
-  //   form.validateFields().then(async (values) => {
-  //     if (!photoData) {
-  //       message.error("Please capture or upload a photo before submitting.");
-  //       return;
-  //     }
-
-  //     // Log the data before submission
-  //     console.log("Photo data being sent to backend:", photoData);
-
-  //     const formData = new FormData();
-
-  //     // Append form data
-  //     formData.append('name', values.name);
-  //     formData.append('matricNo', values.matricNo);
-  //     formData.append('department', values.department);
-  //     formData.append('faculty', values.faculty);
-  //     formData.append('currentPart', values.currentPart);
-  //     formData.append('semester', values.semester);
-  //     formData.append('courses', JSON.stringify(courses)); // Courses as array
-
-  //     // Append face descriptors and images
-  //     formData.append('descriptor1', JSON.stringify(photoData.faceDescriptors[0]));
-  //     formData.append('descriptor2', JSON.stringify(photoData.faceDescriptors[1]));
-  //     formData.append('image1', photoData.previewImages[0]); // First image file
-  //     formData.append('image2', photoData.previewImages[1]); // Second image file
-
-  //     // Log the FormData being submitted to the backend
-  //     console.log('FormData being submitted to backend:', {
-  //       name: formData.get('name'),
-  //       matricNo: formData.get('matricNo'),
-  //       department: formData.get('department'),
-  //       faculty: formData.get('faculty'),
-  //       currentPart: formData.get('currentPart'),
-  //       semester: formData.get('semester'),
-  //       courses: formData.get('courses'),
-  //       descriptor1: formData.get('descriptor1'),
-  //       descriptor2: formData.get('descriptor2'),
-  //       image1: formData.get('image1'),
-  //       image2: formData.get('image2'),
-  //     });
-
-  //     setLoading(true);
-
-  //     try {
-  //       const response = await fetch('/api/v1/students/register', {
-  //         method: 'POST',
-  //         body: formData,  // Pass FormData to the backend
-  //       });
-
-  //       if (response.ok) {
-  //         message.success("Form and photo submitted successfully.");
-  //         console.log("Response from backend:", await response.json()); // Log successful response
-  //         setLoading(false);
-  //         navigate("/verificationpagE");  // Redirect after success
-  //       } else {
-  //         // Log any errors returned by the backend
-  //         const errorResponse = await response.json();
-  //         console.error("Backend error response:", errorResponse);
-  //         message.error("Submission failed. Please try again.");
-  //         setLoading(false);
-  //       }
-  //     } catch (error) {
-  //       console.error("Submission error:", error); // Log the error in the catch block
-  //       message.error("An error occurred during submission. Please try again.");
-  //       setLoading(false);
-  //     }
-  //   });
-  // };
 
   const addCourse = () => {
     if (currentCourse.trim() !== "") {

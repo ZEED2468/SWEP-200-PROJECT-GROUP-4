@@ -204,7 +204,7 @@ drawFaceRect(fullDescription, ctx, videoWidth, videoHeight, camWidth, camHeight)
           </Select>
         </Form.Item>
       </Form>
-
+      {waitText && <p>{waitText}</p>}
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
         <Webcam
           ref={webcamRef}
@@ -233,7 +233,7 @@ drawFaceRect(fullDescription, ctx, videoWidth, videoHeight, camWidth, camHeight)
         </Col>
       </Row>
 
-      {waitText && <p>{waitText}</p>}
+  
 
       {previewImages.length > 0 && (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10px" }}>
