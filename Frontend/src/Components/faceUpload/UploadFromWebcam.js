@@ -63,7 +63,10 @@ export const UploadFromWebcam = ({ onPhotoUpload, loading }) => {
 
     if (webcamRef.current && webcamRef.current.video.readyState === 4) {
       const screenshot = webcamRef.current.getScreenshot();
+      console.log("Screenshot captured:", screenshot);
+
       const compressedImage = await compressImage(screenshot);
+      console.log("Compressed image:", compressedImage);
 
       const videoWidth = webcamRef.current.video.videoWidth;
       const videoHeight = webcamRef.current.video.videoHeight;
@@ -72,14 +75,21 @@ export const UploadFromWebcam = ({ onPhotoUpload, loading }) => {
       canvasRef.current.height = videoHeight;
 
       const fullDescription = await getFullFaceDescription(compressedImage, inputSize);
+      console.log("Full description:", fullDescription);
+
       if (fullDescription.length > 0) {
         setFullDesc(fullDescription);
         const descriptorString = Array.from(fullDescription[0].descriptor).toString();
-        setFaceDescriptors((prev) => [...prev, descriptorString]);
+
+        // Only add the descriptor if we don't already have two
+        if (faceDescriptors.length < 2) {
+          setFaceDescriptors((prev) => [...prev, descriptorString]);
+        }
 
         const ctx = canvasRef.current.getContext("2d");
         drawFaceRect(fullDescription, ctx, videoWidth, videoHeight, camWidth, camHeight);
         setWaitText("");
+
         message.success(`Face detected. You can now save photo ${photoCount + 1}.`);
       } else {
         setWaitText("No face detected. Please adjust your position.");
@@ -108,6 +118,11 @@ export const UploadFromWebcam = ({ onPhotoUpload, loading }) => {
         setPhotoCount((prev) => prev + 1);
 
         message.success(`Face photo ${photoCount + 1} saved.`);
+
+        // Log face descriptors being saved
+        console.log("Descriptors being saved:", faceDescriptors);
+
+        // Check if we have now reached 2 photos
         if (photoCount + 1 === 2) {
           message.success("Two face photos captured. You can now submit the form.");
         }
@@ -120,13 +135,28 @@ export const UploadFromWebcam = ({ onPhotoUpload, loading }) => {
   };
 
   const handleSubmit = async () => {
+    console.log("Photo count:", photoCount);
+    console.log("Preview images length:", previewImages.length);
+    console.log("Face descriptors length:", faceDescriptors.length);
+
+    // Log the descriptors before submission
+    console.log("Descriptors being sent to FaceRegistration:", faceDescriptors);
+
     try {
+      // Ensure we're sending only two descriptors
       if (photoCount === 2 && previewImages.length === 2 && faceDescriptors.length === 2) {
         const formData = new FormData();
         formData.append('descriptor1', faceDescriptors[0]);
         formData.append('descriptor2', faceDescriptors[1]);
         formData.append('image1', previewImages[0], 'image1.jpg');
         formData.append('image2', previewImages[1], 'image2.jpg');
+
+        console.log('FormData being submitted to FaceRegistration:', {
+          descriptor1: formData.get('descriptor1'),
+          image1: formData.get('image1'),
+          descriptor2: formData.get('descriptor2'),
+          image2: formData.get('image2'),
+        });
 
         onPhotoUpload({
           previewImages: [formData.get('image1'), formData.get('image2')],
@@ -178,7 +208,8 @@ export const UploadFromWebcam = ({ onPhotoUpload, loading }) => {
           </Select>
         </Form.Item>
       </Form>
-      {waitText && <p>{waitText}</p>}
+       {waitText && <p>{waitText}</p>}
+
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
         <Webcam
           ref={webcamRef}
@@ -205,21 +236,20 @@ export const UploadFromWebcam = ({ onPhotoUpload, loading }) => {
             Submit
           </Button>
         </Col>
-      </Row>
+        </Row>
 
-      {previewImages.length > 0 && (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10px" }}>
-          {previewImages.map((image, index) => (
-            <img
-              key={index}
-              src={URL.createObjectURL(image)}
-              alt={`Captured ${index + 1}`}
-              style={{ width: "200px", height: "200px", margin: "0 10px" }}
-            />
-          ))}
-        </div>
-      )}
-    </Card>
-  );
+{previewImages.length > 0 && (
+  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10px" }}>
+    {previewImages.map((image, index) => (
+      <img
+        key={index}
+        src={URL.createObjectURL(image)}
+        alt={`Captured ${index + 1}`}
+        style={{ width: "200px", height: "200px", margin: "0 10px" }}
+      />
+    ))}
+  </div>
+)}
+</Card>
+ );
 };
-

@@ -87,86 +87,85 @@
 
 // module.exports = { verifyFace };
 
-const faceapi = require('face-api.js');
-const { Canvas, Image, ImageData } = require('canvas');
-const StudentModel = require('../models/StudentModel');
 
-// Setup face-api.js with canvas
-faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
+const Student = require('../models/StudentModel');
 
-// Helper function to convert the descriptor from the DB to a Float32Array
+// Helper function to convert descriptor from string to Float32Array
 function convertDescriptor(descriptorString) {
-  if (!descriptorString) {
-    console.error('Descriptor is undefined or null');
-    return null;
-  }
+  if (!descriptorString) return null;
   return new Float32Array(descriptorString.split(',').map(value => parseFloat(value) || 0));
 }
 
-// Euclidean distance calculation
+// Function to calculate Euclidean distance
 function calculateEuclideanDistance(desc1, desc2) {
   return Math.sqrt(desc1.reduce((sum, value, index) => sum + Math.pow(value - desc2[index], 2), 0));
 }
 
-// Face Verification Function
-const verifyFace = async (req, res) => {
+module.exports.verifyFace = async (req, res) => {
   const { descriptor1, descriptor2 } = req.body;
 
   if (!descriptor1 || !descriptor2) {
-    return res.status(400).json({ message: 'Both descriptors are required' });
+    return res.status(400).json({ success: false, message: 'Both descriptors are required' });
   }
 
+  console.log('Incoming descriptor1:', descriptor1);
+  console.log('Incoming descriptor2:', descriptor2);
+
   try {
-    const students = await StudentModel.find({}).select('-descriptor1 -descriptor2 -image1 -image2'); 
+    const students = await Student.find({}).select('descriptor1 descriptor2 image1'); // Exclude image2
 
     const inputDescriptor1 = convertDescriptor(descriptor1);
     const inputDescriptor2 = convertDescriptor(descriptor2);
 
     if (!inputDescriptor1 || !inputDescriptor2) {
-      return res.status(400).json({ message: 'Invalid input descriptors' });
+      return res.status(400).json({ success: false, message: 'Invalid input descriptors' });
     }
 
-    for (const student of students) {
-      if (!student.descriptor1 || !student.descriptor2) {
-        continue;
-      }
+    console.log('Converted inputDescriptor1:', inputDescriptor1);
+    console.log('Converted inputDescriptor2:', inputDescriptor2);
 
+    let bestMatch = null;
+    let smallestDistance = Number.MAX_VALUE;
+
+    for (const student of students) {
       const storedDescriptor1 = convertDescriptor(student.descriptor1);
       const storedDescriptor2 = convertDescriptor(student.descriptor2);
 
-      const distance1 = calculateEuclideanDistance(storedDescriptor1, inputDescriptor1);
-      const distance2 = calculateEuclideanDistance(storedDescriptor2, inputDescriptor2);
+      if (!storedDescriptor1 || !storedDescriptor2) {
+        console.warn(`Skipping student ${student.matricNo} due to missing descriptors.`);
+        continue;
+      }
 
-      const threshold = 0.5;
+      const distance1 = calculateEuclideanDistance(inputDescriptor1, storedDescriptor1);
+      const distance2 = calculateEuclideanDistance(inputDescriptor2, storedDescriptor2);
+
+      const threshold = 0.5; // Adjust threshold as needed
+
+      console.log(`Comparing with student ${student.matricNo}:`);
+      console.log('Distance1:', distance1);
+      console.log('Distance2:', distance2);
+      console.log('Threshold:', threshold);
 
       if (distance1 < threshold && distance2 < threshold) {
-        return res.status(200).json({
-          success: true,
-          message: 'Face verified successfully',
-          student: {
-            matricNo: student.matricNo,
-            name: student.name,
-            department: student.department,
-            faculty: student.faculty,
-            currentPart: student.currentPart,
-            semester: student.semester,
-            courses: student.courses,
-          },
-        });
+        console.log('Match found for student:', student.matricNo);
+        if (distance1 + distance2 < smallestDistance) {
+          smallestDistance = distance1 + distance2;
+          bestMatch = student;
+        }
       }
     }
 
-    return res.status(401).json({
-      success: false,
-      message: 'Face verification failed',
-    });
+    if (bestMatch) {
+      console.log('Best match found:', bestMatch);
+      const { image2, ...studentWithoutImage2 } = bestMatch.toObject();
+      return res.status(200).json({ success: true, student: studentWithoutImage2 });
+    } else {
+      console.log('No match found.');
+      return res.status(401).json({ success: false, message: 'Face verification failed' });
+    }
+
   } catch (error) {
     console.error('Error during face verification:', error);
-    return res.status(500).json({ message: 'An error occurred during face verification' });
+    return res.status(500).json({ success: false, message: 'Server error' });
   }
 };
-
-module.exports = {
-  verifyFace,
-};
-

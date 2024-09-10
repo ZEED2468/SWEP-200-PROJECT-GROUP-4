@@ -14,6 +14,7 @@
 //     }
 // }
 
+
 const Student = require('../models/StudentModel');
 
 module.exports.matricQuery = async (req, res) => {
@@ -30,9 +31,11 @@ module.exports.matricQuery = async (req, res) => {
       return res.status(404).json({ message: 'Student not found' });
     }
   } catch (err) {
+    console.error('Error during matric number query:', err);
     return res.status(500).json({ message: 'Server error' });
   }
 };
-;
+
+
   
   
