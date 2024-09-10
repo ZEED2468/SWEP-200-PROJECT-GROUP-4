@@ -64,26 +64,10 @@ const Admin = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <header className="flex flex-row border-b-2 border-[#3FF3FF]">
+      <header className="flex mx-4 flex-row border-b-2 border-[#3FF3FF]">
         <div className="flex flex-row p-4 bg-white">
           <img src={logo} alt="header-logo" width="50px" />
           <h4 className="text-xl font-bold ml-3 mt-2">FaceEdu</h4>
-          <img
-            src={image}
-            alt="header-logo"
-            width="50px"
-            className="relative left-[1190px]"
-          />
-          <Link
-            to="/login"
-            target="_blank"
-            className="relative left-[1200px] border-[#3FF3FF]
-      border-2 p-1 rounded-2xl pl-4 pr-4 hover:bg-[#3FF3FF]"
-          >
-            <button type="button" className="font-bold">
-              Log out
-            </button>
-          </Link>
           <ul className="flex flex-row gap-32 ml-64">
             {NavLinks.map((lists) => (
               <li
@@ -98,7 +82,6 @@ const Admin = () => {
             ))}
           </ul>
           <img src={image} alt="ellipse" className="relative left-[270px]" />
-
           <Link to="/login">
             <button
               className=" border-[#3FF3FF]
@@ -201,22 +184,35 @@ const Admin = () => {
           </p>
 
           {!supervisor ? (
-            <div className="flex flex-row m-auto gap-3">
-              <p className="text-xl font-semibold">Token: </p>
-              <input
-                type="text"
-                name="token"
-                id="token"
-                width={"200px"}
-                value={token?.token.token}
-                readOnly
-                className="font-bold max-w-52 border-gray-300 text-2xl text-cyan-500 text-center hover:bottom-0"
-              />
+            <div className="flex flex-col m-auto gap-3">
+              <div className=" flex flex-row">
+                <p className="text-xl font-semibold">Token: </p>
+                {token?.token.token ? (
+                  <input
+                    type="text"
+                    name="token"
+                    id="token"
+                    width={"200px"}
+                    value={token?.token.token}
+                    readOnly
+                    className="font-bold max-w-52 border-gray-300 text-2xl text-cyan-500 text-center hover:bottom-0"
+                  />
+                ) : (
+                  <p> Loading token .....</p>
+                )}
 
-              <IoMdCopy
-                onClick={handleCopy}
-                className="relative right-2 text-3xl cursor-pointer hover:fill-black"
-              />
+                <IoMdCopy
+                  onClick={handleCopy}
+                  className="relative right-2 text-3xl cursor-pointer hover:fill-black"
+                />
+              </div>
+              <div>
+                <Link to="/admin/users">
+                  <small className="underline ml-24  text-blue-400 cursor-pointer">
+                    View logged users
+                  </small>
+                </Link>
+              </div>
             </div>
           ) : null}
         </div>

@@ -12,6 +12,7 @@ import Result from "./Components/Result.js";
 import NotFound from "./Components/NotFound.js";
 import FaceRegistration from "./Components/faceRegistration.js";
 import { useAuthContext } from "./hooks/useAuthContext.js";
+import AdminUser from "./Components/AdminUser.js";
 
 function App() {
   const { user } = useAuthContext();
@@ -34,7 +35,7 @@ function App() {
             />
             <Route path="/admin" element={<Admin />} />
             <Route path="/supervisor" element={<Supervisor />} />
-
+            <Route path="/admin/users" element={<AdminUser />} />
             <Route path="/tokenlogin" element={<TokenLogin />} />
             <Route path="/verificationpage" element={<VerificationPage />} />
             <Route path="/confirmedpage" element={<ConfirmedPage />} />

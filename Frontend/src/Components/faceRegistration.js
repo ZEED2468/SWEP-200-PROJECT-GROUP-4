@@ -59,6 +59,12 @@ function FaceRegistration() {
     setPhotoData(data); // Save the photo data (previewImages and faceDescriptors) to state
   };
 
+  const [file, setFile] = useState();
+  function handleChange(e) {
+      console.log(e.target.files);
+      setFile(URL.createObjectURL(e.target.files[0]));
+  } //uploading image function
+
   const handleSubmit = async () => {
     form.validateFields().then(async (values) => {
       if (!photoData) {
@@ -180,7 +186,7 @@ function FaceRegistration() {
         </nav>
 
         {/* Main Content - Webcam, Form, Model Load Sections */}
-        <div className="flex-1 flex flex-row items-start justify-center mt-[5rem]">
+        <div className="flex-1 flex flex-row items-start justify-center mt-[10rem]">
           {/* Webcam Section (Largest) */}
           <div className="w-2/4 p-4">
             <section className="flex-1 flex flex-col items-center justify-center">
@@ -259,6 +265,8 @@ function FaceRegistration() {
                   ))}
                 </div>
               </Form.Item>
+              <input type="file" onChange={handleChange}  className="mb-5"/>
+              <img src={file} />
 
               <Button type="primary" onClick={() => setIsModalVisible(true)}>
                 Submit
