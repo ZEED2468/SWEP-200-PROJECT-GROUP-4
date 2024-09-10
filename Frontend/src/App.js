@@ -43,7 +43,6 @@ function App() {
             <Route path="/result" element={<Result />} />
             <Route path="/notfound" element={<NotFound />} />
             <Route path="/faceregistration" element={<FaceRegistration />} />
-            <Route path="/faceregistration" element={<FaceRegistration />} />
           </Routes>
         </BrowserRouter>
       </div>

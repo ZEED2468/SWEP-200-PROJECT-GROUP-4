@@ -14,6 +14,8 @@ const connectDB = require("./db/connect");
 const authRouter = require("./routes/authRoute");
 const userRouter = require("./routes/userRoute");
 const studentRoutes = require("./routes/studentRoutes"); // import student routes
+const faceVerificationRoutes = require('./routes/verificationRoutes'); // import face verification route
+const matricRoute = require('./routes/matricRoute');
 
 //middleware
 const notFound = require("./middleware/not-found");
@@ -31,6 +33,8 @@ app.use(cookieParser(process.env.JWT_SECRET)); // signing our cookies
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/admin", userRouter);
 app.use("/api/v1/students", studentRoutes); // student routes
+app.use('/api/v1', faceVerificationRoutes); // face verification route
+app.use("/api/v1/matric", matricRoute)
 
 // Serve uploaded images
 app.use("/uploads", express.static("uploads"));

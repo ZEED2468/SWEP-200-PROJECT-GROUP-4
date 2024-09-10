@@ -23,7 +23,7 @@ export async function loadModels() {
 
 export async function getFullFaceDescription(blob, inputSize = 512) {
   // tiny_face_detector options
-  let scoreThreshold = 0.8;
+  let scoreThreshold = 0.5;
   const OPTION = new faceapi.SsdMobilenetv1Options({
     inputSize,
     scoreThreshold,
