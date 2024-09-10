@@ -262,6 +262,7 @@ const Verification = () => {
           backgroundImage: `url(${spiral})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
+          height: "120vh",
         }}
       >
         <img src={logo} alt="Logo" className="h-12 mb-8" />
@@ -305,9 +306,9 @@ const Verification = () => {
         </nav>
 
         {/* Webcam Section and Card */}
-        <div className="flex-1 flex flex-row items-start justify-center mt-[12rem]">
+        <div className="flex-1 flex flex-row items-start justify-center mt-[6rem]">
           {/* Webcam Section */}
-          <div className="w-2/4 p-4 mr-[2rem]">
+          <div className="w-2/4 p-4 mr-2">
             <section className="flex-1 flex flex-col items-center justify-center">
               <VerifyFromWebcam
                 onSaveDescriptors={handleSaveDescriptors}
