@@ -80,10 +80,7 @@ export const VerifyFromWebcam = ({ onPhotoUpload, loading, onEnableSubmit, onSav
 
     if (webcamRef.current && webcamRef.current.video.readyState === 4) {
       const screenshot = webcamRef.current.getScreenshot();
-      console.log("Screenshot captured:", screenshot);
-
       const compressedImage = await compressImage(screenshot);
-      console.log("Compressed image:", compressedImage);
 
       const videoWidth = webcamRef.current.video.videoWidth;
       const videoHeight = webcamRef.current.video.videoHeight;
@@ -92,7 +89,6 @@ export const VerifyFromWebcam = ({ onPhotoUpload, loading, onEnableSubmit, onSav
       canvasRef.current.height = videoHeight;
 
       const fullDescription = await getFullFaceDescription(compressedImage, inputSize);
-      console.log("Full description:", fullDescription);
 
       if (fullDescription.length > 0) {
         setFullDesc(fullDescription);
@@ -101,14 +97,10 @@ export const VerifyFromWebcam = ({ onPhotoUpload, loading, onEnableSubmit, onSav
 
         const ctx = canvasRef.current.getContext("2d");
 
-        // Ensure canvas matches the webcam feed
-        canvasRef.current.width = camWidth;
-        canvasRef.current.height = camHeight;
-
         // Draw rectangle and landmarks
-        drawFaceRect(fullDescription, ctx);
-        setWaitText("");
+        drawFaceRect(fullDescription, ctx, videoWidth, videoHeight, camWidth, camHeight);
 
+        setWaitText("");
         message.success(`Face detected. You can now save photo ${photoCount + 1}.`);
       } else {
         setWaitText("No face detected. Please adjust your position.");
@@ -153,7 +145,6 @@ export const VerifyFromWebcam = ({ onPhotoUpload, loading, onEnableSubmit, onSav
         if (photoCount + 1 === 2) {
           message.success("Two face photos captured.");
           setIsCaptureCompleted(true);
-          console.log("Face descriptors ready for verification:", faceDescriptors);
           onSaveDescriptors(faceDescriptors.slice(0, 2));
           onEnableSubmit(true);
           message.info("Ready for verification.");
@@ -241,17 +232,17 @@ export const VerifyFromWebcam = ({ onPhotoUpload, loading, onEnableSubmit, onSav
           </Row>
 
           {previewImages.length > 0 && (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10px" }}>
-      {previewImages.map((image, index) => (
-        <img
-          key={index}
-          src={URL.createObjectURL(image)}
-          alt={`Captured ${index + 1}`}
-          style={{ width: "200px", height: "200px", margin: "0 10px" }}
-        />
-      ))}
-    </div>
-  )}
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10px" }}>
+              {previewImages.map((image, index) => (
+                <img
+                  key={index}
+                  src={URL.createObjectURL(image)}
+                  alt={`Captured ${index + 1}`}
+                  style={{ width: "200px", height: "200px", margin: "0 10px" }}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </Card>
@@ -259,6 +250,3 @@ export const VerifyFromWebcam = ({ onPhotoUpload, loading, onEnableSubmit, onSav
 };
 
 export default VerifyFromWebcam;
-
-
-

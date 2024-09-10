@@ -87,7 +87,6 @@
 
 // module.exports = { verifyFace };
 
-
 const faceapi = require('face-api.js');
 const { Canvas, Image, ImageData } = require('canvas');
 const StudentModel = require('../models/StudentModel');
@@ -97,15 +96,11 @@ faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
 
 // Helper function to convert the descriptor from the DB to a Float32Array
 function convertDescriptor(descriptorString) {
-  // Check if descriptorString exists
   if (!descriptorString) {
     console.error('Descriptor is undefined or null');
-    return null; // Return null if descriptor is missing
+    return null;
   }
-  return new Float32Array(descriptorString.split(',').map(value => {
-    const parsedValue = parseFloat(value);
-    return isNaN(parsedValue) ? 0 : parsedValue; // Handle NaN values
-  }));
+  return new Float32Array(descriptorString.split(',').map(value => parseFloat(value) || 0));
 }
 
 // Euclidean distance calculation
@@ -122,7 +117,7 @@ const verifyFace = async (req, res) => {
   }
 
   try {
-    const students = await StudentModel.find({}).select('-descriptor1 -descriptor2 -image1 -image2'); // Exclude unwanted fields
+    const students = await StudentModel.find({}).select('-descriptor1 -descriptor2 -image1 -image2'); 
 
     const inputDescriptor1 = convertDescriptor(descriptor1);
     const inputDescriptor2 = convertDescriptor(descriptor2);
@@ -132,24 +127,12 @@ const verifyFace = async (req, res) => {
     }
 
     for (const student of students) {
-      // Ensure the student's descriptors exist before comparing
       if (!student.descriptor1 || !student.descriptor2) {
-        console.warn(`Student with matricNo ${student.matricNo} has missing descriptors.`);
-        continue; // Skip this student if descriptors are missing
+        continue;
       }
 
       const storedDescriptor1 = convertDescriptor(student.descriptor1);
       const storedDescriptor2 = convertDescriptor(student.descriptor2);
-
-      if (!storedDescriptor1 || !storedDescriptor2) {
-        console.warn(`Failed to convert descriptors for student with matricNo ${student.matricNo}`);
-        continue;
-      }
-
-      if (inputDescriptor1.length !== storedDescriptor1.length || inputDescriptor2.length !== storedDescriptor2.length) {
-        console.error('Descriptor lengths do not match.');
-        continue;
-      }
 
       const distance1 = calculateEuclideanDistance(storedDescriptor1, inputDescriptor1);
       const distance2 = calculateEuclideanDistance(storedDescriptor2, inputDescriptor2);
@@ -175,13 +158,15 @@ const verifyFace = async (req, res) => {
 
     return res.status(401).json({
       success: false,
-      message: 'Face verification failed'
+      message: 'Face verification failed',
     });
-
   } catch (error) {
     console.error('Error during face verification:', error);
     return res.status(500).json({ message: 'An error occurred during face verification' });
   }
 };
 
-module.exports = { verifyFace };
+module.exports = {
+  verifyFace,
+};
+

@@ -138,6 +138,8 @@
 
 // export default VerificationPage;
 
+
+
 import React, { useState, useEffect } from "react";
 import VerifyFromWebcam from "./faceVerify/verifyFromWebcam";
 import { useNavigate, Link } from "react-router-dom";
