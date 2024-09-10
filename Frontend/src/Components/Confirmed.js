@@ -63,11 +63,6 @@ function ConfirmedPage() {
             ))}
           </ul>
           <div className="flex flex-row items-center">
-            <img
-              src="placeholder" // image placeholder
-              alt="Profile"
-              className="mr-2 w-8 h-8 border-2 border-cyan-400 rounded-full object-cover"
-            />
             <button
               onClick={logOut}
               class="px-4 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors"
