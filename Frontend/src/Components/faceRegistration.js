@@ -16,15 +16,18 @@ import hlogo from "../img/Group 7.png";
 import spiral from "../img/bgi.png";
 import { NavLinks } from ".";
 import { useMutation } from "@apollo/client";
-
+import { useAuthContext } from "../hooks/useAuthContext";
 const { Option } = Select;
 
 const DEFAULT_UPLOAD_OPTION = "From Webcam";
 const UPLOAD_OPTION = ["From Webcam", "From Disk"];
 
 function FaceRegistration() {
+  const { user, dispatch } = useAuthContext();
   const [form] = Form.useForm();
-  const [selectedUploadOption, setSelectedUploadOption] = useState(DEFAULT_UPLOAD_OPTION);
+  const [selectedUploadOption, setSelectedUploadOption] = useState(
+    DEFAULT_UPLOAD_OPTION
+  );
   const [isAllModelLoaded, setIsAllModelLoaded] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
   const [loadingMessageError, setLoadingMessageError] = useState("");
@@ -46,7 +49,11 @@ function FaceRegistration() {
       await loadModels(setLoadingMessage, setLoadingMessageError);
       setIsAllModelLoaded(true);
     }
-    if (isFaceDetectionModelLoaded() && isFacialLandmarkDetectionModelLoaded() && isFeatureExtractionModelLoaded()) {
+    if (
+      isFaceDetectionModelLoaded() &&
+      isFacialLandmarkDetectionModelLoaded() &&
+      isFeatureExtractionModelLoaded()
+    ) {
       setIsAllModelLoaded(true);
       return;
     }
@@ -67,34 +74,40 @@ function FaceRegistration() {
       }
 
       const formData = new FormData();
-      
+
       // Append form data
-      formData.append('name', values.name);
-      formData.append('matricNo', values.matricNo);
-      formData.append('department', values.department);
-      formData.append('faculty', values.faculty);
-      formData.append('currentPart', values.currentPart);
-      formData.append('semester', values.semester);
-      formData.append('courses', JSON.stringify(courses)); // Courses as array
+      formData.append("name", values.name);
+      formData.append("matricNo", values.matricNo);
+      formData.append("department", values.department);
+      formData.append("faculty", values.faculty);
+      formData.append("currentPart", values.currentPart);
+      formData.append("semester", values.semester);
+      formData.append("courses", JSON.stringify(courses)); // Courses as array
 
       // Append face descriptors and images
-      formData.append('descriptor1', JSON.stringify(photoData.faceDescriptors[0]));
-      formData.append('descriptor2', JSON.stringify(photoData.faceDescriptors[1]));
-      formData.append('image1', photoData.previewImages[0]); // First image file
-      formData.append('image2', photoData.previewImages[1]); // Second image file
+      formData.append(
+        "descriptor1",
+        JSON.stringify(photoData.faceDescriptors[0])
+      );
+      formData.append(
+        "descriptor2",
+        JSON.stringify(photoData.faceDescriptors[1])
+      );
+      formData.append("image1", photoData.previewImages[0]); // First image file
+      formData.append("image2", photoData.previewImages[1]); // Second image file
 
       setLoading(true);
 
       try {
-        const response = await fetch('/api/v1/students/register', {
-          method: 'POST',
-          body: formData,  // Pass FormData to the backend
+        const response = await fetch("/api/v1/students/register", {
+          method: "POST",
+          body: formData, // Pass FormData to the backend
         });
 
         if (response.ok) {
           message.success("Form and photo submitted successfully.");
           setLoading(false);
-          navigate("/confirmedpage");  // Redirect after success
+          navigate("/confirmedpage"); // Redirect after success
         } else {
           message.error("Submission failed. Please try again.");
           setLoading(false);
@@ -114,11 +127,26 @@ function FaceRegistration() {
     }
   };
 
+  const logOut = async () => {
+    const response = await fetch("/api/v1/auth/logout", {
+      method: "GET",
+    });
+    if (!response.ok) {
+      console.log("Uable to logout");
+    }
+    localStorage.removeItem("user");
+    dispatch({ type: "LOGOUT" });
+  };
+
   return (
     <div className="flex h-screen">
       <div
         className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8"
-        style={{ backgroundImage: `url(${spiral})`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}
+        style={{
+          backgroundImage: `url(${spiral})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+        }}
       >
         <img src={logo} alt="Logo" className="h-12 mb-8" />
         <h1 className="text-2xl font-bold">Face Edu</h1>
@@ -135,7 +163,10 @@ function FaceRegistration() {
 
           <ul className="flex flex-row ml-[100px] gap-36">
             {NavLinks.map((lists) => (
-              <li key={lists.text} className="text-black text-center hover:text-cyan-400 text-lg font-semibold mt-2">
+              <li
+                key={lists.text}
+                className="text-black text-center hover:text-cyan-400 text-lg font-semibold mt-2"
+              >
                 <Link to={lists.destination} className="cursor-pointer mr-7">
                   {lists.text}
                 </Link>
@@ -149,11 +180,13 @@ function FaceRegistration() {
               alt="Profile"
               className="mr-2 w-8 h-8 border-2 border-cyan-400 rounded-full object-cover"
             />
-            <Link to="/login">
-              <button className="px-4 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors">
-                Log out
-              </button>
-            </Link>
+
+            <button
+              onClick={logOut}
+              className="px-4 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors"
+            >
+              Log out
+            </button>
           </div>
         </nav>
 
@@ -180,14 +213,23 @@ function FaceRegistration() {
           {/* Form Section (Medium) */}
           <div className="w-1/4 p-4">
             <Form form={form} layout="vertical" className="mt-10 w-full">
-              <Form.Item label="Name" name="name" rules={[{ required: true, message: "Please enter your name" }]}>
+              <Form.Item
+                label="Name"
+                name="name"
+                rules={[{ required: true, message: "Please enter your name" }]}
+              >
                 <Input />
               </Form.Item>
 
               <Form.Item
                 label="Matric No"
                 name="matricNo"
-                rules={[{ required: true, message: "Please enter your matric number" }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter your matric number",
+                  },
+                ]}
               >
                 <Input />
               </Form.Item>
@@ -195,7 +237,9 @@ function FaceRegistration() {
               <Form.Item
                 label="Department"
                 name="department"
-                rules={[{ required: true, message: "Please enter your department" }]}
+                rules={[
+                  { required: true, message: "Please enter your department" },
+                ]}
               >
                 <Input />
               </Form.Item>
@@ -203,7 +247,9 @@ function FaceRegistration() {
               <Form.Item
                 label="Faculty"
                 name="faculty"
-                rules={[{ required: true, message: "Please enter your faculty" }]}
+                rules={[
+                  { required: true, message: "Please enter your faculty" },
+                ]}
               >
                 <Input />
               </Form.Item>
@@ -211,7 +257,9 @@ function FaceRegistration() {
               <Form.Item
                 label="Current Part"
                 name="currentPart"
-                rules={[{ required: true, message: "Please enter your current part" }]}
+                rules={[
+                  { required: true, message: "Please enter your current part" },
+                ]}
               >
                 <Input />
               </Form.Item>
@@ -219,14 +267,19 @@ function FaceRegistration() {
               <Form.Item
                 label="Semester"
                 name="semester"
-                rules={[{ required: true, message: "Please enter your semester" }]}
+                rules={[
+                  { required: true, message: "Please enter your semester" },
+                ]}
               >
                 <Input />
               </Form.Item>
 
               <Form.Item label="Courses">
                 <div className="flex">
-                  <Input value={currentCourse} onChange={(e) => setCurrentCourse(e.target.value)} />
+                  <Input
+                    value={currentCourse}
+                    onChange={(e) => setCurrentCourse(e.target.value)}
+                  />
                   <Button onClick={addCourse} className="ml-2">
                     Add
                   </Button>
@@ -250,7 +303,10 @@ function FaceRegistration() {
               {/* Upload Option */}
               <Form layout="vertical" className="mt-6 w-full">
                 <Form.Item label="Upload Option">
-                  <Select defaultValue={DEFAULT_UPLOAD_OPTION} onChange={handleSelectUploadOption}>
+                  <Select
+                    defaultValue={DEFAULT_UPLOAD_OPTION}
+                    onChange={handleSelectUploadOption}
+                  >
                     {UPLOAD_OPTION.map((op) => (
                       <Option key={op} value={op}>
                         {op}
@@ -296,9 +352,6 @@ function FaceRegistration() {
 }
 
 export default FaceRegistration;
-
-
-
 
 // import { useNavigate, Link } from "react-router-dom";
 // import { Button, Input, Form, Modal, Select, Card, message } from "antd";
@@ -363,7 +416,7 @@ export default FaceRegistration;
 //   }, [isAllModelLoaded]);
 
 //   const handlePhotoUpload = (data) => {
-//     setPhotoData(data); 
+//     setPhotoData(data);
 //     if (data.faceDescriptors.length === 2) {
 //       setDescriptors(data.faceDescriptors.map(desc => desc.toString()));
 //     }

@@ -3,9 +3,8 @@ import logo from "../img/Group 7.png";
 import back from "../img/group.png";
 import topLogo from "../img/Group 6.png";
 import { NavLinks } from ".";
-
+import { useAuthContext } from "../hooks/useAuthContext";
 import { Link } from "react-router-dom";
-
 const background = {
   backgroundImage: `url(${back})`,
   backgroundSize: "cover",
@@ -14,22 +13,33 @@ const background = {
 };
 
 const Home = () => {
+  const logOut = async () => {
+    const response = await fetch("/api/v1/auth/logout", {
+      method: "GET",
+    });
+    if (!response.ok) {
+      console.log("Uable to logout");
+    }
+    localStorage.removeItem("user");
+    dispatch({ type: "LOGOUT" });
+  };
+  const { user, dispatch } = useAuthContext();
+
   return (
     <div className=" flex flex-col h-screen">
       <header className="flex flex-row border-b-2 border-[#3FF3FF]">
         <div className="flex flex-row p-4 bg-white">
           <img src={logo} alt="header-logo" width="50px" />
           <h4 className="text-xl font-bold ml-3 mt-2">FaceEdu</h4>
-          <Link
-            to="/login"
-            target="_blank"
-            className="relative left-[1200px] border-[#3FF3FF]
-      border-2 p-1 rounded-2xl pl-4 pr-4 hover:bg-[#3FF3FF]"
+
+          <button
+            className="relative left-[1200px] border-[#ff3fcf]
+      border-2 p-1 rounded-2xl pl-4 pr-4 hover:bg-[#3FF3FF] font-bold "
+            onClick={logOut}
           >
-            <button type="button" className="font-bold">
-              Log out
-            </button>
-          </Link>
+            Log out
+          </button>
+
           <ul className="flex flex-row gap-32 ml-64">
             {NavLinks.map((lists) => (
               <li

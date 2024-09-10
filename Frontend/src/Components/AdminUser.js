@@ -69,24 +69,19 @@ function AdminUser() {
           <>
             {loading ? (
               <>
+                <p className="text-blue-600 font-bold">
+                  {" "}
+                  Loading supervisor list......
+                </p>
+              </>
+            ) : (
+              <>
                 <div>
                   {" "}
                   <p className="text-2xl text-red-500 font-bold text-center m-2 p-2">
                     OOPs!!! No Users 😓
                   </p>
-                  <Link to="/admin">
-                    <p className="font-bold text-center text-xl text-blue-400 cursor-pointer hover:text-blue-600">
-                      Go to Home
-                    </p>
-                  </Link>
                 </div>
-              </>
-            ) : (
-              <>
-                <p className="text-blue-600 font-bold">
-                  {" "}
-                  Loading supervisor list......
-                </p>
               </>
             )}
           </>

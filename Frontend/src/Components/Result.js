@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import logo from "../img/Group 6.png";
 import spiral from "../img/bgi.png";
 import hlogo from "../img/Group 7.png";
-import { NavLinks } from '.';
-import { Link } from 'react-router-dom';
+import { NavLinks } from ".";
+import { Link } from "react-router-dom";
 
 const Result = () => {
-
   const background = {
     backgroundImage: `url(${spiral})`,
     backgroundSize: "cover",
-    backgroundRepeat: "no-repeat"
-  }
+    backgroundRepeat: "no-repeat",
+  };
 
   // Hardcoded data to make sure it's working.
   const [studentData] = useState({
@@ -32,29 +31,44 @@ const Result = () => {
       "EEE292",
       "MEE204",
       "MEE206",
-      "MTH201"
-    ]
+      "MTH201",
+    ],
   });
+
+  const logOut = async () => {
+    const response = await fetch("/api/v1/auth/logout", {
+      method: "GET",
+    });
+    if (!response.ok) {
+      console.log("Uable to logout");
+    }
+    localStorage.removeItem("user");
+    dispatch({ type: "LOGOUT" });
+  };
 
   return (
     <div className="flex h-screen">
-      <div className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8"
-      style={background}>
+      <div
+        className="bg-black text-white w-1/4 flex flex-col items-center justify-center p-8"
+        style={background}
+      >
         <img src={logo} alt="Logo" className="h-12 mb-8" />
         <h1 className="text-2xl font-bold">Face Edu</h1>
       </div>
 
-      
       <div className="flex-1 flex flex-col items-center justify-center bg-white">
         <nav className="absolute top-0 left-0 w-full flex justify-between items-center p-3 bg-white shadow border-b-2 border-cyan-400">
           <div className="flex">
-            <img src={hlogo} alt="Header Logo" className="h-6 mt-1"/>
+            <img src={hlogo} alt="Header Logo" className="h-6 mt-1" />
             <h1 className="text-2xl font-bold ml-3">Face Edu</h1>
           </div>
-          <ul className='flex flex-row ml-[100px] gap-36'>
+          <ul className="flex flex-row ml-[100px] gap-36">
             {NavLinks.map((lists) => (
-              <li key={lists} className='text-black text-center hover:text-cyan-400 text-lg font-semibold mt-2'>
-                <Link to={lists.destination} className='cursor-pointer mr-7'>
+              <li
+                key={lists}
+                className="text-black text-center hover:text-cyan-400 text-lg font-semibold mt-2"
+              >
+                <Link to={lists.destination} className="cursor-pointer mr-7">
                   {lists.text}
                 </Link>
               </li>
@@ -66,7 +80,10 @@ const Result = () => {
               alt="Profile"
               className="mr-2 w-8 h-8 border-2 border-cyan-400 rounded-full object-cover"
             />
-            <button className="px-4 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors">
+            <button
+              onClick={logOut}
+              className="px-4 py-2 text-black bg-transparent border-2 border-cyan-400 rounded-full hover:bg-cyan-400 hover:text-black transition-colors"
+            >
               Log out
             </button>
           </div>
@@ -81,9 +98,8 @@ const Result = () => {
             <p className="font-semibold">Programme:</p>
             <p className="font-semibold">Semester/Session:</p>
             <p className="font-semibold">Current Part:</p>
-
           </div>
-            <div className="space-y-2 ml-20">
+          <div className="space-y-2 ml-20">
             <p className="font-semibold">{studentData.registrationNo}</p>
             <p className="font-semibold">{studentData.name}</p>
             <p>{studentData.faculty}</p>
@@ -103,7 +119,9 @@ const Result = () => {
         </div>
 
         <div className="w-2/3 pt-10">
-          <h2 className="text-1xl text-center font-bold mb-4 mr-40">LIST OF REGISTERED COURSES</h2>
+          <h2 className="text-1xl text-center font-bold mb-4 mr-40">
+            LIST OF REGISTERED COURSES
+          </h2>
           <div className="grid grid-cols-4 gap-4">
             {studentData.courses.map((course, index) => (
               <p key={index}>{course}</p>
@@ -117,8 +135,4 @@ const Result = () => {
 
 export default Result;
 
-    
-
-
-    // justify-between items-start
-
+// justify-between items-start
