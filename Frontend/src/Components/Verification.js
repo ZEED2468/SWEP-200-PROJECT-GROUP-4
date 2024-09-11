@@ -63,7 +63,9 @@ const Verification = () => {
 
       if (result.success) {
         message.success("Face verified successfully!");
-        navigate('/result', { state: { student: result.student, fromMatricNumber: false } });
+        navigate("/result", {
+          state: { student: result.student, fromMatricNumber: false },
+        });
       } else {
         message.error(result.message || "Face verification failed.");
         navigate("/failedpage");

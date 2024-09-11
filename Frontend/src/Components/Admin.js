@@ -31,6 +31,7 @@ const Admin = () => {
     }
     localStorage.removeItem("user");
     dispatch({ type: "LOGOUT" });
+    navigate("/login");
   };
   const [token, setToken] = useState(null);
   //const [text, setText] = useState("");
@@ -58,9 +59,6 @@ const Admin = () => {
   useEffect(() => {
     fetchToken();
   }, [user]);
-  console.log(tokenID);
-  console.log(token?.token.token);
-  console.log(supervisor);
 
   return (
     <div className="flex flex-col h-screen">
@@ -81,17 +79,14 @@ const Admin = () => {
               </li>
             ))}
           </ul>
-          <img src={image} alt="ellipse" className="relative left-[270px]" />
-          <Link to="/login">
-            <button
-              className=" border-[#3FF3FF]
-      border-2 p-2 rounded-2xl font-bold ml-[300px] pl-4 pr-4 hover:bg-[#3FF3FF]"
-              type="button"
-              onClick={logOut}
-            >
-              Log out
-            </button>
-          </Link>
+
+          <button
+            className="relative left-[130px] mt-2 border-[#3fdcff]
+      border-2 p-1 rounded-2xl pl-4 pr-4 hover:bg-[#3FF3FF] font-bold "
+            onClick={logOut}
+          >
+            Log out
+          </button>
         </div>
       </header>
       <section

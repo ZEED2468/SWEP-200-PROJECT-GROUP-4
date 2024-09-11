@@ -1,9 +1,12 @@
-import React from 'react'; // Ensure React is imported
+import React from "react"; // Ensure React is imported
 import logo from "../img/Group 6.png";
 import spiral from "../img/bgi.png";
 import hlogo from "../img/Group 7.png";
 import cancel from "../img/cancel.png";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { NavLinks } from ".";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function NotFound() {
   const background = {
@@ -12,6 +15,7 @@ function NotFound() {
     backgroundRepeat: "no-repeat",
   };
   const { user, dispatch } = useAuthContext();
+  const navigate = useNavigate();
 
   const logOut = async () => {
     const response = await fetch("/api/v1/auth/logout", {
@@ -22,6 +26,7 @@ function NotFound() {
     }
     localStorage.removeItem("user");
     dispatch({ type: "LOGOUT" });
+    navigate("/login");
   };
 
   return (
@@ -40,10 +45,18 @@ function NotFound() {
             <img src={hlogo} alt="Header Logo" className="h-6 mt-1" />
             <h1 className="text-2xl font-bold ml-3">Face Edu</h1>
           </div>
-          <ul className="flex space-x-40">
-            <li className="text-lg font-semibold">Home</li>
-            <li className="text-lg font-semibold text-black">Verification</li>
-            <li className="text-lg font-semibold">Result</li>
+          <ul className="flex flex-row gap-32 ml-64">
+            {NavLinks.map((lists) => (
+              <li
+                key={lists}
+                className="text-black text-center hover:text-[#3FF3FF] text-lg
+                  font-semibold mt-2"
+              >
+                <Link to={lists.destination} className="cursor-pointer mr-7">
+                  {lists.text}
+                </Link>
+              </li>
+            ))}
           </ul>
           <div className="flex flex-row items-center">
             <button

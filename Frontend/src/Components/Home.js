@@ -4,7 +4,7 @@ import back from "../img/group.png";
 import topLogo from "../img/Group 6.png";
 import { NavLinks } from ".";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const background = {
   backgroundImage: `url(${back})`,
   backgroundSize: "cover",
@@ -13,6 +13,8 @@ const background = {
 };
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const logOut = async () => {
     const response = await fetch("/api/v1/auth/logout", {
       method: "GET",
@@ -22,6 +24,7 @@ const Home = () => {
     }
     localStorage.removeItem("user");
     dispatch({ type: "LOGOUT" });
+    navigate("/login");
   };
   const { user, dispatch } = useAuthContext();
 
@@ -33,7 +36,7 @@ const Home = () => {
           <h4 className="text-xl font-bold ml-3 mt-2">FaceEdu</h4>
 
           <button
-            className="relative left-[1200px] border-[#ff3fcf]
+            className="relative left-[1200px] border-[#3fdcff]
       border-2 p-1 rounded-2xl pl-4 pr-4 hover:bg-[#3FF3FF] font-bold "
             onClick={logOut}
           >
