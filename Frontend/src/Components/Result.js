@@ -12,9 +12,10 @@ const Result = () => {
 
   console.log("Result page state:", state); // Debugging line
 
-  if (!student.name) {
+  if (!student || !student.matricNo) {
     return <Navigate to="/notfound" />;
   }
+  
 
   const currentPart = student.currentPart || 'N/A';
   const semester = student.semester || 'N/A';
