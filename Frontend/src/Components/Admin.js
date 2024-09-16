@@ -31,6 +31,7 @@ const Admin = () => {
     }
     localStorage.removeItem("user");
     dispatch({ type: "LOGOUT" });
+    navigate('/login')
   };
   const [token, setToken] = useState(null);
   //const [text, setText] = useState("");
@@ -81,7 +82,7 @@ const Admin = () => {
               </li>
             ))}
           </ul>
-          <img src={image} alt="ellipse" className="relative left-[270px]" />
+          
           <Link to="/login">
             <button
               className=" border-[#3FF3FF]

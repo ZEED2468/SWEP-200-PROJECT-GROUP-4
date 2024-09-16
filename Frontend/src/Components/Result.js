@@ -1,9 +1,10 @@
 import React from 'react';
-import { useLocation, Navigate, Link } from 'react-router-dom';
+import { useLocation, Navigate, useNavigate, Link } from 'react-router-dom';
 import logo from "../img/Group 6.png";
 import spiral from "../img/bgi.png";
 import hlogo from "../img/Group 7.png";
 import { NavLinks } from '.';
+
 
 const Result = () => {
   const location = useLocation();
@@ -15,7 +16,18 @@ const Result = () => {
   if (!student || !student.matricNo) {
     return <Navigate to="/notfound" />;
   }
-  
+  const navigate = useNavigate()
+  const logOut = async () => {
+    const response = await fetch("/api/v1/auth/logout", {
+      method: "GET",
+    });
+    if (!response.ok) {
+      console.log("Uable to logout");
+    }
+    localStorage.removeItem("user");
+    dispatch({ type: "LOGOUT" });
+    navigate('/login')
+  };
 
   const currentPart = student.currentPart || 'N/A';
   const semester = student.semester || 'N/A';
@@ -49,6 +61,16 @@ const Result = () => {
               </li>
             ))}
           </ul>
+          <Link to="/login">
+            <button
+              className=" border-[#3FF3FF]
+      border-2 p-2 rounded-2xl font-bold ml-[300px] pl-4 pr-4 hover:bg-[#3FF3FF]"
+              type="button"
+              onClick={logOut}
+            >
+              Log out
+            </button>
+          </Link>
         </nav>
 
         <div className="flex w-2/3 mt-20">
@@ -73,7 +95,7 @@ const Result = () => {
             <img
               src={image1}
               alt="Profile"
-              className="w-24 h-24 border-2 border-cyan-400 rounded-full object-cover"
+              className="w-25 h-36 border-2 border-cyan-400 rounded-full object-cover"
             />
           </div>
         </div>
